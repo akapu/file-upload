@@ -4,6 +4,8 @@ import { when } from "lit/directives/when.js";
 class FileUpload extends LitElement {
   static properties = {
     _file: { state: true },
+    _name: { state: true },
+    _isNameEmpty: { state: true },
     _clientValidationError: { state: true },
     _clientValidationErrorMessage: { state: true },
   };
@@ -12,6 +14,8 @@ class FileUpload extends LitElement {
     super();
 
     this._file = null;
+    this._name = "";
+    this._isNameEmpty = true;
     this._clientValidationError = false;
     this._clientValidationErrorMessage = "";
   }
@@ -21,6 +25,17 @@ class FileUpload extends LitElement {
   handleFileSelected(e) {
     this._file = e.detail.file;
     this.validateFile();
+  }
+
+  handleNameChanged(e) {
+    this._name = e.detail.value;
+    this.validateName();
+  }
+
+  validateName() {
+    if (this._name === "") {
+      this._isNameEmpty = true;
+    }
   }
 
   validateFile() {
@@ -49,6 +64,7 @@ class FileUpload extends LitElement {
 
   render() {
     return html`
+      <text-field @value-changed=${this.handleNameChanged}></text-field>
       <file-field @file-selected=${this.handleFileSelected}></file-field>
       ${when(this._file, () => this.renderFileState())}
     `;
