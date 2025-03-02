@@ -10,4 +10,4 @@ class FileUpload extends LitElement {
   }
 }
 
-customElements.define('file-field', FileUpload);
+customElements.define('file-upload', FileUpload);
