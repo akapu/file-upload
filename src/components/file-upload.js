@@ -6,6 +6,7 @@ class FileUpload extends LitElement {
 
   render() {
     return html`
+    <file-field></file-field>
     `;
   }
 }
