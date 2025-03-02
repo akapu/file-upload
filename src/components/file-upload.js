@@ -62,11 +62,28 @@ class FileUpload extends LitElement {
     }
   }
 
+  submit() {
+    const proxy = 'https://corsproxy.io/?url='
+    const url = "https://file-upload-server-mc26.onrender.com/api/v1/upload";
+    const formData = new FormData();
+    formData.append("file", this._file);
+    formData.append("name", this._name);
+
+    fetch(proxy + url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+  }
+
   render() {
     return html`
       <text-field @value-changed=${this.handleNameChanged}></text-field>
       <file-field @file-selected=${this.handleFileSelected}></file-field>
       ${when(this._file, () => this.renderFileState())}
+      <submit-button @click=${this.submit}></submit-button>
     `;
   }
 }
