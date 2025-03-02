@@ -1,14 +1,11 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from "lit";
 
 class FileUpload extends LitElement {
-  static styles = css`
-  `;
+  static styles = css``;
 
   render() {
-    return html`
-    <file-field></file-field>
-    `;
+    return html` <file-field></file-field> `;
   }
 }
 
-customElements.define('file-upload', FileUpload);
+customElements.define("file-upload", FileUpload);
