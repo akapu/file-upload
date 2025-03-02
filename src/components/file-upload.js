@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 
-export class FileUpload extends LitElement {
+class FileUpload extends LitElement {
   static styles = css`
   `;
 
@@ -9,3 +9,5 @@ export class FileUpload extends LitElement {
     `;
   }
 }
+
+customElements.define('file-field', FileUpload);
