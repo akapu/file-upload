@@ -52,6 +52,9 @@ class FileUpload extends LitElement {
       this._clientValidationErrorMessage = "Только csv, json, txt";
       return;
     }
+
+    this._clientValidationError = false;
+    this._clientValidationErrorMessage = "";
   }
 
   renderFileState() {
