@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 
 class FileUpload extends LitElement {
   static properties = {
+    _state: { state: true },
     _file: { state: true },
     _name: { state: true },
     _isNameEmpty: { state: true },
@@ -10,9 +11,14 @@ class FileUpload extends LitElement {
     _clientValidationErrorMessage: { state: true },
   };
 
+  stateRenderFunctionMap = {
+    initial: () => this.renderInitialState(),
+  };
+
   constructor() {
     super();
 
+    this._state = "initial";
     this._file = null;
     this._name = "";
     this._isNameEmpty = true;
@@ -66,7 +72,7 @@ class FileUpload extends LitElement {
   }
 
   submit() {
-    const proxy = 'https://corsproxy.io/?url='
+    const proxy = "https://corsproxy.io/?url=";
     const url = "https://file-upload-server-mc26.onrender.com/api/v1/upload";
     const formData = new FormData();
     formData.append("file", this._file);
@@ -81,13 +87,21 @@ class FileUpload extends LitElement {
       .catch((err) => console.error(err));
   }
 
-  render() {
+  renderInitialState() {
     return html`
       <text-field @value-changed=${this.handleNameChanged}></text-field>
       <file-field @file-selected=${this.handleFileSelected}></file-field>
       ${when(this._file, () => this.renderFileState())}
       <submit-button @click=${this.submit}></submit-button>
     `;
+  }
+
+  get currentRenderFunction() {
+    return this.stateRenderFunctionMap[this._state];
+  }
+
+  render() {
+    return this.currentRenderFunction();
   }
 }
 
