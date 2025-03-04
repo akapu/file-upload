@@ -1,7 +1,12 @@
 import { LitElement, html, css } from "lit";
+import { theme } from "../theme.js";
 
 class FileField extends LitElement {
   static styles = css`
+    ${theme.styles.font}
+    ${theme.utility.borderBox}
+    ${theme.styles.removeDefaultButton}
+
     .dropzone {
       cursor: pointer;
     }
@@ -47,14 +52,14 @@ class FileField extends LitElement {
 
   render() {
     return html`
-      <div
+      <button
         class="dropzone"
         @click=${this.passClickToInput}
         @drop=${this.drop}
         @dragover=${this.dragover}
       >
         <docs-image></docs-image>
-      </div>
+      </button>
 
       <input
         type="file"
