@@ -11,4 +11,11 @@ export const theme = {
       }
     `,
   },
+  utility: {
+    borderBox: css`
+      .border-box {
+        box-sizing: border-box;
+      }
+    `,
+  },
 };

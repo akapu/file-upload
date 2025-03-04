@@ -5,6 +5,7 @@ import { theme } from "../theme.js";
 class FileUpload extends LitElement {
   static styles = css`
     ${theme.styles.font}
+    ${theme.utility.borderBox}
 
     .window {
       width: 302px;
@@ -140,7 +141,7 @@ class FileUpload extends LitElement {
 
   renderInitialState() {
     return html`
-      <div class="window">
+      <div class="window border-box">
         <form>
           <header>
             <h2 class="title">Загрузочное окно</h2>
