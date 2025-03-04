@@ -9,7 +9,7 @@ class CrossIcon extends LitElement {
   constructor() {
     super();
     this.width = 16;
-    this.height = 17;
+    this.height = 16;
   }
 
   render() {
@@ -17,7 +17,7 @@ class CrossIcon extends LitElement {
       <svg
         width=${this.width}
         height=${this.height}
-        viewBox="0 0 16 17"
+        viewBox="0 0 16 16"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
