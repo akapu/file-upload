@@ -91,9 +91,7 @@ class FileUpload extends LitElement {
   }
 
   validateName() {
-    if (this._name === "") {
-      this._isNameEmpty = true;
-    }
+    this._isNameEmpty = this._name === "";
   }
 
   validateFile() {
@@ -146,7 +144,13 @@ class FileUpload extends LitElement {
           <header>
             <h2 class="title">Загрузочное окно</h2>
 
-            <p class="hint">Перед загрузкой дайте имя файлу</p>
+            <p class="hint">
+              ${when(
+                this._isNameEmpty,
+                () => html`Перед загрузкой дайте имя файлу`,
+                () => html`Перенесите ваш в файл в область ниже`
+              )}
+            </p>
           </header>
 
           <text-field @value-changed=${this.handleNameChanged}></text-field>
