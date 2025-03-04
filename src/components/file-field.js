@@ -11,6 +11,10 @@ class FileField extends LitElement {
       cursor: pointer;
     }
 
+    .dropzone:disabled {
+      cursor: not-allowed;
+    }
+
     input {
       display: none;
     }
@@ -39,6 +43,8 @@ class FileField extends LitElement {
 
   drop(e) {
     e.preventDefault();
+
+    if (this.disabled) return;
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
