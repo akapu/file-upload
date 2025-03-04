@@ -1,23 +1,15 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html } from "lit";
 
 class CrossIcon extends LitElement {
-  static styles = css`
-    svg {
-      color: ${this.color};
-    }
-  `;
-
   static properties = {
     width: { type: Number },
     height: { type: Number },
-    color: { type: String },
   };
 
   constructor() {
     super();
     this.width = 16;
     this.height = 17;
-    this.color = "black";
   }
 
   render() {
