@@ -6,6 +6,10 @@ class TextField extends LitElement {
     ${theme.styles.font}
     ${theme.utility.borderBox}
 
+    .text-field {
+      position: relative;
+    }
+
     input {
       width: 277px;
       height: 35px;
@@ -28,6 +32,13 @@ class TextField extends LitElement {
     }
 
     input::placeholder {
+      color: #a5a5a5;
+    }
+
+    cross-icon {
+      position: absolute;
+      top: 9px;
+      right: 9px;
       color: #a5a5a5;
     }
   `;
@@ -55,7 +66,7 @@ class TextField extends LitElement {
 
   render() {
     return html`
-      <label>
+      <div class="text-field">
         <input
           class="border-box"
           type="text"
@@ -63,7 +74,8 @@ class TextField extends LitElement {
           ?disabled=${this.disabled}
           @change=${this.changeValue}
         />
-      </label>
+        <cross-icon></cross-icon>
+      </div>
     `;
   }
 }
