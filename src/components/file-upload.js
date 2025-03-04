@@ -145,11 +145,16 @@ class FileUpload extends LitElement {
         <form>
           <header>
             <h2 class="title">Загрузочное окно</h2>
+
             <p class="hint">Перед загрузкой дайте имя файлу</p>
           </header>
+
           <text-field @value-changed=${this.handleNameChanged}></text-field>
+
           <file-field @file-selected=${this.handleFileSelected}></file-field>
+
           ${when(this._file, () => this.renderFileState())}
+
           <submit-button @click=${this.submit}></submit-button>
         </form>
       </div>
