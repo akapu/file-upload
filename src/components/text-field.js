@@ -48,21 +48,24 @@ class TextField extends LitElement {
 
     .clear-button.active {
       color: #5f5cf0;
+      cursor: pointer;
     }
   `;
 
   static properties = {
     disabled: { type: Boolean },
     _active: { type: Boolean, state: true },
+    _value: { type: String, state: true },
   };
 
   constructor() {
     super();
     this.disabled = false;
     this._active = false;
+    this._value = "";
   }
 
-  changeValue(newValue) {
+  dispatchChangeEvent(newValue) {
     const changeEvent = new CustomEvent("value-changed", {
       detail: { value: newValue },
       bubbles: true,
@@ -74,15 +77,24 @@ class TextField extends LitElement {
 
   handleChange(e) {
     const newValue = e.target.value;
+    this.setValue(newValue);
+  }
 
-    this.changeValue(newValue);
-    this._active = Boolean(newValue);
+  setValue(value) {
+    this.dispatchChangeEvent(value);
+    this._active = Boolean(value);
+    this._value = value;
+  }
+
+  clearValue() {
+    this.setValue("");
   }
 
   render() {
     return html`
       <div class="text-field">
         <input
+          .value=${this._value}
           class="border-box"
           type="text"
           placeholder="Название файла"
@@ -93,6 +105,7 @@ class TextField extends LitElement {
         <button
           ?disabled=${!this._active}
           class=${classMap({ "clear-button": true, active: this._active })}
+          @click=${this.clearValue}
         >
           <cross-icon></cross-icon>
         </button>
