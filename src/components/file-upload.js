@@ -57,7 +57,6 @@ class FileUpload extends LitElement {
   `;
 
   static properties = {
-    _state: { state: true },
     _file: { state: true },
     _name: { state: true },
     _isNameEmpty: { state: true },
@@ -65,14 +64,9 @@ class FileUpload extends LitElement {
     _clientValidationErrorMessage: { state: true },
   };
 
-  stateRenderFunctionMap = {
-    initial: () => this.renderInitialState(),
-  };
-
   constructor() {
     super();
 
-    this._state = "initial";
     this._file = null;
     this._name = "";
     this._isNameEmpty = true;
@@ -137,7 +131,7 @@ class FileUpload extends LitElement {
       .catch((err) => console.error(err));
   }
 
-  renderInitialState() {
+  render() {
     return html`
       <div class="window border-box">
         <form>
@@ -163,14 +157,6 @@ class FileUpload extends LitElement {
         </form>
       </div>
     `;
-  }
-
-  get currentRenderFunction() {
-    return this.stateRenderFunctionMap[this._state];
-  }
-
-  render() {
-    return this.currentRenderFunction();
   }
 }
 
