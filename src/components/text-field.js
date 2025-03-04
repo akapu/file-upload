@@ -27,7 +27,7 @@ class TextField extends LitElement {
       line-height: 21px;
       letter-spacing: 0%;
 
-      color: #5f5cf0;
+      color: ${theme.colors.primary};
       background: #f1f1f1;
 
       border: 1px solid #a5a5a5;
@@ -47,7 +47,7 @@ class TextField extends LitElement {
     }
 
     .clear-button.active {
-      color: #5f5cf0;
+      color: ${theme.colors.primary};
       cursor: pointer;
     }
   `;

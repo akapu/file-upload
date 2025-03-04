@@ -17,7 +17,7 @@ class FileUpload extends LitElement {
       padding-left: 13px;
       background: linear-gradient(
         180deg,
-        #5f5cf0 0%,
+        ${theme.colors.primary} 0%,
         #dddcfc 42.5%,
         #ffffff 100%
       );

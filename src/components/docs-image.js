@@ -1,10 +1,15 @@
 import { LitElement, html, css } from "lit";
+import { theme } from "../theme.js";
 
 /**
  * Обернут в компонент потому что <img> не отображает blur, а <object> не прокидывает наверх клики
  */
 class DocsImage extends LitElement {
-  static styles = css``;
+  static styles = css`
+    svg {
+      color: ${theme.colors.primary};
+    }
+  `;
 
   render() {
     return html`
@@ -17,7 +22,7 @@ class DocsImage extends LitElement {
       >
         <path
           d="M7.20096 17.1661C7.117 8.46057 14.1013 1.33283 22.8067 1.2399L57.6361 0.868103C62.1924 0.819465 65.9255 4.47364 65.9741 9.02993C66.0223 13.549 69.6973 17.1882 74.2167 17.1922L159.823 17.268C168.39 17.2756 175.386 24.1203 175.58 32.6858L177.31 109.092C177.51 117.922 170.422 125.196 161.59 125.224L23.9218 125.669C15.2491 125.697 8.18038 118.718 8.09674 110.046L7.20096 17.1661Z"
-          fill="#5F5CF0"
+          fill="currentColor"
         />
         <rect
           x="103.691"

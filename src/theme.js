@@ -26,4 +26,7 @@ export const theme = {
       }
     `,
   },
+  colors: {
+    primary: css`#5f5cf0`,
+  }
 };
