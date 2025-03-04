@@ -16,6 +16,16 @@ class FileField extends LitElement {
     }
   `;
 
+  static properties = {
+    disabled: { type: Boolean, reflect: true },
+  };
+
+  constructor() {
+    super();
+
+    this.disabled = false;
+  }
+
   handleFileSelect(e) {
     const file = e.target.files[0];
     if (file) {
@@ -57,11 +67,13 @@ class FileField extends LitElement {
         @click=${this.passClickToInput}
         @drop=${this.drop}
         @dragover=${this.dragover}
+        ?disabled=${this.disabled}
       >
         <docs-image></docs-image>
       </button>
 
       <input
+        ?disabled=${this.disabled}
         type="file"
         accept=".txt,.json,.csv"
         @change=${this.handleFileSelect}
