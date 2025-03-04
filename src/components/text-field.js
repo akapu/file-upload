@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { theme } from "../theme.js";
+import {classMap} from 'lit/directives/class-map.js';
 
 class TextField extends LitElement {
   static styles = css`
@@ -41,20 +42,25 @@ class TextField extends LitElement {
       right: 9px;
       color: #a5a5a5;
     }
+
+    cross-icon.active {
+      cursor: pointer;
+      color: #5f5cf0;
+    }
   `;
 
   static properties = {
     disabled: { type: Boolean },
+    _active: { type: Boolean, state: true },
   };
 
   constructor() {
     super();
     this.disabled = false;
+    this._active = false;
   }
 
-  changeValue(e) {
-    const newValue = e.target.value;
-
+  changeValue(newValue) {
     const changeEvent = new CustomEvent("value-changed", {
       detail: { value: newValue },
       bubbles: true,
@@ -62,6 +68,13 @@ class TextField extends LitElement {
     });
 
     this.dispatchEvent(changeEvent);
+  }
+
+  handleChange(e) {
+    const newValue = e.target.value;
+
+    this.changeValue(newValue);
+    this._active = Boolean(newValue);
   }
 
   render() {
@@ -72,9 +85,10 @@ class TextField extends LitElement {
           type="text"
           placeholder="Название файла"
           ?disabled=${this.disabled}
-          @change=${this.changeValue}
+          @input=${this.handleChange}
         />
-        <cross-icon></cross-icon>
+
+          <cross-icon class=${classMap({ active: this._active })}></cross-icon>
       </div>
     `;
   }
