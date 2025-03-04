@@ -1,11 +1,12 @@
 import { LitElement, html, css } from "lit-element";
 import { theme } from "../theme.js";
-import {classMap} from 'lit/directives/class-map.js';
+import { classMap } from "lit/directives/class-map.js";
 
 class TextField extends LitElement {
   static styles = css`
     ${theme.styles.font}
     ${theme.utility.borderBox}
+    ${theme.styles.removeDefaultButton}
 
     .text-field {
       position: relative;
@@ -36,15 +37,16 @@ class TextField extends LitElement {
       color: #a5a5a5;
     }
 
-    cross-icon {
+    .clear-button {
+      width: 16px;
+      height: 16px;
       position: absolute;
-      top: 9px;
+      top: 9.5px;
       right: 9px;
       color: #a5a5a5;
     }
 
-    cross-icon.active {
-      cursor: pointer;
+    .clear-button.active {
       color: #5f5cf0;
     }
   `;
@@ -88,7 +90,12 @@ class TextField extends LitElement {
           @input=${this.handleChange}
         />
 
-          <cross-icon class=${classMap({ active: this._active })}></cross-icon>
+        <button
+          ?disabled=${!this._active}
+          class=${classMap({ "clear-button": true, active: this._active })}
+        >
+          <cross-icon></cross-icon>
+        </button>
       </div>
     `;
   }
