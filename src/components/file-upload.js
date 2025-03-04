@@ -11,7 +11,7 @@ class FileUpload extends LitElement {
       width: 302px;
       height: 479px;
       border-radius: 22px;
-      padding-top: 31px;
+      padding-top: 42px;
       padding-right: 13px;
       padding-bottom: 12px;
       padding-left: 13px;
