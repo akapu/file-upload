@@ -10,6 +10,14 @@ export const theme = {
         -moz-osx-font-smoothing: grayscale;
       }
     `,
+    removeDefaultButton: css`
+      button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+      }
+    `,
   },
   utility: {
     borderBox: css`
