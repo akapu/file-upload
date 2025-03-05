@@ -9,6 +9,23 @@ class FileField extends LitElement {
 
     .dropzone {
       cursor: pointer;
+
+      height: 257;
+      width: 100%;
+      border-radius: 30px;
+      padding-top: 42px;
+      padding-right: 27px;
+      padding-bottom: 17px;
+      padding-left: 27px;
+
+      background: #ffffff66;
+
+      border: 1px solid #a5a5a5;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
 
     .dropzone:disabled {
