@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { when } from "lit/directives/when.js";
-import { createRef, ref} from "lit/directives/ref.js";
+import { createRef, ref } from "lit/directives/ref.js";
 import { theme } from "../theme.js";
 
 class FileUpload extends LitElement {
@@ -156,7 +156,13 @@ class FileUpload extends LitElement {
 
           ${when(
             this._file,
-            () => html`<file-status ${ref(this.fileStatus)} .name=${this._file.name}></file-status>`
+            () =>
+              html`<file-status
+                ${ref(this.fileStatus)}
+                .name=${this._file.name}
+                duration="1200"
+                delay="140"
+              ></file-status>`
           )}
 
           <submit-button @click=${this.submit}></submit-button>
