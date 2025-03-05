@@ -10,7 +10,7 @@ class FileField extends LitElement {
     .dropzone {
       cursor: pointer;
 
-      height: 257;
+      height: 257px;
       width: 100%;
       border-radius: 30px;
       padding-top: 42px;
@@ -30,6 +30,18 @@ class FileField extends LitElement {
 
     .dropzone:disabled {
       cursor: not-allowed;
+    }
+
+    .hint {
+      padding: 0;
+      margin: 0;
+      color: ${theme.colors.primary};
+
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16.94px;
+      letter-spacing: 0%;
+      text-align: center;
     }
 
     input {
@@ -86,13 +98,18 @@ class FileField extends LitElement {
   render() {
     return html`
       <button
-        class="dropzone"
+        class="dropzone border-box"
         @click=${this.passClickToInput}
         @drop=${this.drop}
         @dragover=${this.dragover}
         ?disabled=${this.disabled}
       >
         <docs-image></docs-image>
+
+        <p class="hint">
+          Перенесите ваш файл <br />
+          в эту область
+        </p>
       </button>
 
       <input
