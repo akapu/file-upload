@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { when } from "lit/directives/when.js";
+import { createRef, ref} from "lit/directives/ref.js";
 import { theme } from "../theme.js";
 
 class FileUpload extends LitElement {
@@ -63,6 +64,8 @@ class FileUpload extends LitElement {
     _clientValidationErrorMessage: { state: true },
   };
 
+  fileStatus = createRef();
+
   constructor() {
     super();
 
@@ -75,6 +78,7 @@ class FileUpload extends LitElement {
 
   handleFileSelected(e) {
     this._file = e.detail.file;
+    if (this._file) this.fileStatus.value.startAnimation();
     this.validateFile();
   }
 
@@ -104,14 +108,6 @@ class FileUpload extends LitElement {
 
     this._clientValidationError = false;
     this._clientValidationErrorMessage = "";
-  }
-
-  renderFileState() {
-    if (this._clientValidationError) {
-      return html` <p>${this._clientValidationErrorMessage}</p> `;
-    } else {
-      return html` <p>Файл загружен</p> `;
-    }
   }
 
   submit() {
@@ -158,8 +154,10 @@ class FileUpload extends LitElement {
             ?disabled=${this._isNameEmpty}
           ></file-field>
 
-          ${when(this._file, () => this.renderFileState())}
-          <file-status></file-status>
+          ${when(
+            this._file,
+            () => html`<file-status ${ref(this.fileStatus)} .name=${this._file.name}></file-status>`
+          )}
 
           <submit-button @click=${this.submit}></submit-button>
         </form>
