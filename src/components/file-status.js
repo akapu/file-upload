@@ -40,6 +40,7 @@ class FileStatus extends LitElement {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 6px;
     }
 
     .text-info {
@@ -133,7 +134,10 @@ class FileStatus extends LitElement {
             <span class="progress-text-info"> ${this._progress}% </span>
           </div>
 
-          <div class="progress-bar"></div>
+          <progress-bar
+            .duration=${this.duration}
+            .delay=${this.delay}
+          ></progress-bar>
         </div>
 
         <button><cross-icon width="13" height="13"></cross-icon></button>
