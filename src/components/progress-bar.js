@@ -6,8 +6,8 @@ export class ProgressBar extends LitElement {
     ${theme.utility.borderBox}
 
     .progress-bar {
-      width: 182px;
-      height: 5px;
+      width: 100%;
+      height: 6px;
       border-radius: 10px;
 
       background: white;
