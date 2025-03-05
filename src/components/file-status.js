@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
+import { when } from "lit/directives/when.js";
 
 class FileStatus extends LitElement {
   static styles = css`
@@ -134,10 +135,15 @@ class FileStatus extends LitElement {
             <span class="progress-text-info"> ${this._progress}% </span>
           </div>
 
-          <progress-bar
-            .duration=${this.duration}
-            .delay=${this.delay}
-          ></progress-bar>
+          ${when(
+            this._progress < 100,
+            () => html`
+              <progress-bar
+                .duration=${this.duration}
+                .delay=${this.delay}
+              ></progress-bar>
+            `
+          )}
         </div>
 
         <button><cross-icon width="13" height="13"></cross-icon></button>
