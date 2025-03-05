@@ -40,7 +40,7 @@ class TextField extends LitElement {
       width: 16px;
       height: 16px;
       position: absolute;
-      top: 9.5px;
+      top: 9px;
       right: 9px;
       color: #a5a5a5;
       cursor: not-allowed;
