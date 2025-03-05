@@ -113,7 +113,7 @@ class FileStatus extends LitElement {
     clearInterval(this._animationInterval);
 
     this._animationInterval = setInterval(() => {
-      if (this._progress >= 100) {
+      if (this._progress === 100) {
         clearInterval(this._animationInterval);
         return;
       }
