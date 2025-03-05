@@ -15,12 +15,15 @@ export class ProgressBar extends LitElement {
   `;
 
   static properties = {
-    progress: { type: Number },
+    duration: { type: Number },
+    delay: { type: Number },
   };
 
   constructor() {
     super();
-    this.progress = 0;
+
+    this.duration = 1000;
+    this.delay = 0;
   }
 
   render() {
