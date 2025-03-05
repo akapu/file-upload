@@ -44,6 +44,7 @@ class TextField extends LitElement {
       top: 9.5px;
       right: 9px;
       color: #a5a5a5;
+      cursor: not-allowed;
     }
 
     .clear-button.active {
