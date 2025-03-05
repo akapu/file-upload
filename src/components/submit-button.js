@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 
-class SubminButton extends LitElement {
+class SubmitButton extends LitElement {
   static styles = css`
   `;
 
@@ -16,5 +16,5 @@ class SubminButton extends LitElement {
   }
 }
 
-customElements.define('submit-button', SubminButton);
+customElements.define('submit-button', SubmitButton);
 
