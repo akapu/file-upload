@@ -40,7 +40,7 @@ class FileStatus extends LitElement {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 6px;
+      gap: 7px;
     }
 
     .text-info {
