@@ -147,9 +147,17 @@ class FileUpload extends LitElement {
             </p>
           </header>
 
-          <text-field @value-changed=${this.handleNameChanged}></text-field>
+          ${when(
+            !this._file,
+            () => html`
+              <text-field @value-changed=${this.handleNameChanged}></text-field>
+            `
+          )}
 
-          <file-field @file-selected=${this.handleFileSelected} ?disabled=${this._isNameEmpty}></file-field>
+          <file-field
+            @file-selected=${this.handleFileSelected}
+            ?disabled=${this._isNameEmpty}
+          ></file-field>
 
           ${when(this._file, () => this.renderFileState())}
 
