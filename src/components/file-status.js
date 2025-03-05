@@ -29,10 +29,13 @@ class FileStatus extends LitElement {
       color: ${theme.colors.primary};
 
       padding-top: 2px;
+
+      flex-shrink: 0;
     }
 
     .info {
-      flex-grow: 1;
+      flex: 1 1 auto;
+      min-width: 0;
 
       display: flex;
       flex-direction: column;
@@ -44,6 +47,7 @@ class FileStatus extends LitElement {
 
       display: flex;
       justify-content: space-between;
+      gap: 10px;
 
       font-size: 10px;
       line-height: 12px;
@@ -51,10 +55,17 @@ class FileStatus extends LitElement {
 
     .name-text-info {
       font-weight: 500;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .progress-text-info {
       font-weight: 400;
+      flex-shrink: 0;
     }
 
     .indicator {
@@ -63,6 +74,8 @@ class FileStatus extends LitElement {
       border-radius: 10px;
 
       background: ${theme.colors.primary};
+
+      flex-shrink: 0;
     }
   `;
 
