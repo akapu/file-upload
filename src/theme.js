@@ -2,14 +2,6 @@ import { css } from "lit";
 
 export const theme = {
   styles: {
-    font: css`
-      :host {
-        font-family: Inter, Arial, sans-serif;
-
-        -webkit-font-smoothing: subpixel-antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-    `,
     removeDefaultButton: css`
       button {
         background: none;
@@ -25,8 +17,17 @@ export const theme = {
         box-sizing: border-box;
       }
     `,
+    font: css`
+      .font {
+        font-family: Inter, Arial, sans-serif;
+        letter-spacing: 0.015em;
+
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    `,
   },
   colors: {
     primary: css`#5f5cf0`,
-  }
+  },
 };

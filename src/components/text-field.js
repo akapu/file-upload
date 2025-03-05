@@ -4,9 +4,9 @@ import { classMap } from "lit/directives/class-map.js";
 
 class TextField extends LitElement {
   static styles = css`
-    ${theme.styles.font}
     ${theme.utility.borderBox}
     ${theme.styles.removeDefaultButton}
+    ${theme.utility.font}
 
     .text-field {
       position: relative;
@@ -25,7 +25,6 @@ class TextField extends LitElement {
       font-weight: 400;
       font-size: 17.5px;
       line-height: 21px;
-      letter-spacing: 0%;
 
       color: ${theme.colors.primary};
       background: #f1f1f1;
@@ -96,7 +95,7 @@ class TextField extends LitElement {
       <div class="text-field">
         <input
           .value=${this._value}
-          class="border-box"
+          class="border-box font"
           type="text"
           placeholder="Название файла"
           ?disabled=${this.disabled}

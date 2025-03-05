@@ -4,8 +4,8 @@ import { theme } from "../theme.js";
 
 class FileUpload extends LitElement {
   static styles = css`
-    ${theme.styles.font}
     ${theme.utility.borderBox}
+    ${theme.utility.font}
 
     .window {
       width: 302px;
@@ -31,6 +31,7 @@ class FileUpload extends LitElement {
 
     header {
       color: white;
+
       display: flex;
       flex-direction: column;
       gap: 7px;
@@ -41,7 +42,6 @@ class FileUpload extends LitElement {
       font-weight: 500;
       font-size: 20px;
       line-height: 24px;
-      letter-spacing: 0%;
       padding: 0;
       margin: 0;
     }
@@ -50,7 +50,6 @@ class FileUpload extends LitElement {
       font-weight: 200;
       font-size: 14px;
       line-height: 17px;
-      letter-spacing: 0%;
       padding: 0;
       margin: 0;
     }
@@ -135,7 +134,7 @@ class FileUpload extends LitElement {
     return html`
       <div class="window border-box">
         <form>
-          <header>
+          <header class="font">
             <h2 class="title">Загрузочное окно</h2>
 
             <p class="hint">
@@ -160,6 +159,7 @@ class FileUpload extends LitElement {
           ></file-field>
 
           ${when(this._file, () => this.renderFileState())}
+          <file-status></file-status>
 
           <submit-button @click=${this.submit}></submit-button>
         </form>

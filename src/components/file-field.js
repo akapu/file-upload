@@ -3,8 +3,8 @@ import { theme } from "../theme.js";
 
 class FileField extends LitElement {
   static styles = css`
-    ${theme.styles.font}
     ${theme.utility.borderBox}
+    ${theme.utility.font}
     ${theme.styles.removeDefaultButton}
 
     .dropzone {
@@ -39,8 +39,7 @@ class FileField extends LitElement {
 
       font-weight: 400;
       font-size: 14px;
-      line-height: 16.94px;
-      letter-spacing: 0%;
+      line-height: 17px;
       text-align: center;
     }
 
@@ -106,7 +105,7 @@ class FileField extends LitElement {
       >
         <docs-image></docs-image>
 
-        <p class="hint">
+        <p class="hint font">
           Перенесите ваш файл <br />
           в эту область
         </p>
