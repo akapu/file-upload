@@ -7,3 +7,4 @@ import "./components/text-field";
 import "./components/submit-button";
 import "./components/cross-icon";
 import "./components/file-status";
+import "./components/progress-bar";
