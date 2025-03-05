@@ -71,6 +71,8 @@ class FileStatus extends LitElement {
     delay: { type: Number },
     duration: { type: Number },
     _progress: { type: Number, state: true },
+    _animationInterval: { type: Number, state: true },
+    _connected: { type: Boolean, state: true },
   };
 
   constructor() {
@@ -80,6 +82,7 @@ class FileStatus extends LitElement {
     this.delay = 0;
     this.duration = 1000;
     this.name = "";
+    this._animationInterval = 0;
   }
 
   connectedCallback() {
@@ -92,10 +95,12 @@ class FileStatus extends LitElement {
 
   startAnimation() {
     const delayBetweenFrames = this.duration / 100;
+    this._progress = 0;
+    clearInterval(this._animationInterval);
 
-    const interval = setInterval(() => {
+    this._animationInterval = setInterval(() => {
       if (this._progress >= 100) {
-        clearInterval(interval);
+        clearInterval(this._animationInterval);
         return;
       }
 
