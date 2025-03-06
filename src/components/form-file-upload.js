@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { when } from "lit/directives/when.js";
 import { theme } from "../theme.js";
+import { FileUploadFormManager } from "../FileUploadFormManager.js";
 
 class FormFileUpload extends LitElement {
   static styles = css`
@@ -39,103 +40,28 @@ class FormFileUpload extends LitElement {
   `;
 
   static properties = {
-    _file: { state: true },
-    _fileLoaded: { type: Boolean, state: true },
-    _name: { state: true },
-    _isNameEmpty: { state: true },
-    _clientValidationError: { state: true },
-    _clientValidationErrorMessage: { state: true },
-    _submitting: { state: true },
+    _formManager: { type: Object, state: true },
   };
 
   constructor() {
     super();
 
-    this._file = null;
-    this._fileLoaded = false;
-    this._name = "";
-    this._isNameEmpty = true;
-    this._clientValidationError = false;
-    this._clientValidationErrorMessage = "";
+    this._formManager = new FileUploadFormManager();
   }
 
   handleFileSelected(e) {
-    this._file = e.detail.file;
-    this._fileLoaded = false;
-    this.validateFile();
+    this._formManager.file = e.detail.file;
+    this.requestUpdate();
   }
 
   handleNameChanged(e) {
-    this._name = e.detail.value;
-    this.validateName();
-  }
-
-  handleFileFieldCleared() {
-    this._file = null;
-    this._fileLoaded = false;
-    this._clientValidationError = false;
-    this._clientValidationErrorMessage = "";
+    this._formManager.name= e.detail.value;
+    this.requestUpdate();
   }
 
   handleFileLoaded() {
-    this._fileLoaded = true;
-  }
-
-  validateName() {
-    this._isNameEmpty = this._name === "";
-  }
-
-  validateFile() {
-    if (this._file.size > 1024) {
-      this._clientValidationError = true;
-      this._clientValidationErrorMessage = "Максимальный размер файла 1 КиБ";
-      return;
-    }
-
-    const allowedExtensions = ["csv", "json", "txt"];
-    const fileExtension = this._file.name.split(".").pop().toLowerCase();
-    if (!allowedExtensions.includes(fileExtension)) {
-      this._clientValidationError = true;
-      this._clientValidationErrorMessage = "Только csv, json, txt";
-      return;
-    }
-
-    this._clientValidationError = false;
-    this._clientValidationErrorMessage = "";
-  }
-
-  submit() {
-    this._submitting = true;
-
-    const proxy = "https://corsproxy.io/?url=";
-    const url = "https://file-upload-server-mc26.onrender.com/api/v1/upload";
-
-    const formData = new FormData();
-    formData.append("file", this._file);
-    formData.append("name", this._name);
-
-    fetch(proxy + url, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err))
-      .then(() => (this._submitting = false));
-  }
-
-  get submitDisabled() {
-    return (
-      this._isNameEmpty ||
-      this._clientValidationError ||
-      !this._file ||
-      !this._fileLoaded ||
-      this._submitting
-    );
-  }
-
-  get fileFieldDisabled() {
-    return this._isNameEmpty || this._submitting;
+    this._formManager.fileLoaded= true;
+    this.requestUpdate();
   }
 
   render() {
@@ -146,7 +72,7 @@ class FormFileUpload extends LitElement {
 
           <p class="hint">
             ${when(
-              this._isNameEmpty,
+              !this._formManager.isNameValid,
               () => html`Перед загрузкой дайте имя файлу`,
               () => html`Перенесите ваш файл в область ниже`
             )}
@@ -154,25 +80,24 @@ class FormFileUpload extends LitElement {
         </header>
 
         ${when(
-          !this._file,
+          !this._formManager.isFileFilled,
           () => html`
             <text-field
               @value-changed=${this.handleNameChanged}
-              .value=${this._name}
+              .value=${this._formManager.name}
             ></text-field>
           `
         )}
 
         <file-field
           @file-selected=${this.handleFileSelected}
-          @field-cleared=${this.handleFileFieldCleared}
           @file-loaded=${this.handleFileLoaded}
-          ?disabled=${this.fileFieldDisabled}
+          ?disabled=${this._formManager.isFileFieldDisabled}
         ></file-field>
 
         <submit-button
-          @click=${this.submit}
-          ?disabled=${this.submitDisabled}
+          @click=${this._formManager.submit}
+          ?disabled=${this._formManager.isSubmitDisabled}
         ></submit-button>
       </form>
     `;
