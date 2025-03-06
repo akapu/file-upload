@@ -26,7 +26,7 @@ class SubmitButton extends LitElement {
       padding-bottom: 16px;
       padding-left: 86px;
 
-      transition: background 0.6s linear;
+      transition: background-color 0.6s linear;
     }
 
     button:disabled {
