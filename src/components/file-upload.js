@@ -137,7 +137,7 @@ class FileUpload extends LitElement {
               ${when(
                 this._isNameEmpty,
                 () => html`Перед загрузкой дайте имя файлу`,
-                () => html`Перенесите ваш в файл в область ниже`
+                () => html`Перенесите ваш файл в область ниже`
               )}
             </p>
           </header>
