@@ -47,7 +47,7 @@ class FileUpload extends LitElement {
   handleSubmit(event) {
     this.requestUpdate(); // перед загрузкой файла
     
-    event.details.submitPromise.then(() => this.requestUpdate()); // после загрузки файла
+    event.detail.submitPromise.then(() => this.requestUpdate()); // после загрузки файла
   }
 
   render() {
