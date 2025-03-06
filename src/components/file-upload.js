@@ -128,6 +128,10 @@ class FileUpload extends LitElement {
       .catch((err) => console.error(err));
   }
 
+  get submitDisabled() {
+    return this._isNameEmpty || this._clientValidationError || !this._file;
+  }
+
   render() {
     return html`
       <div class="window border-box">
@@ -147,7 +151,10 @@ class FileUpload extends LitElement {
           ${when(
             !this._file,
             () => html`
-              <text-field @value-changed=${this.handleNameChanged} .value=${this._name}></text-field>
+              <text-field
+                @value-changed=${this.handleNameChanged}
+                .value=${this._name}
+              ></text-field>
             `
           )}
 
@@ -157,7 +164,10 @@ class FileUpload extends LitElement {
             ?disabled=${this._isNameEmpty}
           ></file-field>
 
-          <submit-button @click=${this.submit}></submit-button>
+          <submit-button
+            @click=${this.submit}
+            ?disabled=${this.submitDisabled}
+          ></submit-button>
         </form>
       </div>
     `;
