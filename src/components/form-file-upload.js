@@ -81,6 +81,18 @@ class FormFileUpload extends LitElement {
     this.dispatchEvent(submitEvent);
   }
 
+  get hint() {
+    if (!this._formManager.isNameValid) {
+      return "Перед загрузкой дайте имя файлу";
+    }
+
+    if (!this._formManager.isSubmitDisabled) {
+      return "Загрузите ваш файл";
+    }
+
+    return "Перенесите ваш файл в область ниже";
+  }
+
   render() {
     return html`
       <form>
@@ -88,11 +100,7 @@ class FormFileUpload extends LitElement {
           <h2 class="title">Загрузочное окно</h2>
 
           <p class="hint">
-            ${when(
-              !this._formManager.isNameValid,
-              () => html`Перед загрузкой дайте имя файлу`,
-              () => html`Перенесите ваш файл в область ниже`
-            )}
+            ${this.hint}
           </p>
         </header>
 
