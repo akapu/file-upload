@@ -78,14 +78,24 @@ class FileUpload extends LitElement {
   }
 
   handleFileSelected(e) {
-    this._file = e.detail.file;
     if (this._file) this.fileStatus.value.startAnimation();
+    this._file = e.detail.file;
     this.validateFile();
   }
 
   handleNameChanged(e) {
     this._name = e.detail.value;
     this.validateName();
+  }
+
+  handleFileRemoveRequested() {
+    this.fileField.value.clearField();
+  }
+
+  handleFileFieldCleared() {
+    this._file = null;
+    this._clientValidationError = false;
+    this._clientValidationErrorMessage = "";
   }
 
   validateName() {
@@ -127,10 +137,6 @@ class FileUpload extends LitElement {
       .catch((err) => console.error(err));
   }
 
-  handleFileRemoveRequested() {
-
-  }
-
   render() {
     return html`
       <div class="window border-box">
@@ -157,6 +163,7 @@ class FileUpload extends LitElement {
           <file-field
             ${ref(this.fileField)}
             @file-selected=${this.handleFileSelected}
+            @field-cleared=${this.handleFileFieldCleared}
             ?disabled=${this._isNameEmpty}
           ></file-field>
 

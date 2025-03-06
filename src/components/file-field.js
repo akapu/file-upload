@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
+import { createRef, ref } from "lit/directives/ref.js";
 
 class FileField extends LitElement {
   static styles = css`
@@ -58,6 +59,8 @@ class FileField extends LitElement {
     this.disabled = false;
   }
 
+  fileInput = createRef();
+
   handleFileSelect(e) {
     const file = e.target.files[0];
     if (file) {
@@ -94,6 +97,20 @@ class FileField extends LitElement {
     this.dispatchEvent(fileSelected);
   }
 
+  dispatchFieldCleared() {
+    const fieldCleared = new CustomEvent("field-cleared", {
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(fieldCleared);
+  }
+
+  clearField() {
+    this.fileInput.value.value = null;
+    this.dispatchFieldCleared();
+  }
+
   render() {
     return html`
       <button
@@ -116,6 +133,7 @@ class FileField extends LitElement {
         type="file"
         accept=".txt,.json,.csv"
         @change=${this.handleFileSelect}
+        ${ref(this.fileInput)}
       />
     `;
   }
