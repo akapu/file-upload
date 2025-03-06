@@ -24,6 +24,8 @@ class FileUpload extends LitElement {
   `;
 
   static properties = {
+    // сначала с предоставленного эдпоинта в браузере нельзя было прочитать ответ из-за CORS
+    // использование прокси решало проблему, сейчас неактуально
     proxy: { type: String },
     _fileUploadFormManager: { type: Object, state: true },
   };
@@ -37,7 +39,7 @@ class FileUpload extends LitElement {
   set proxy(newProxy) {
     this._fileUploadFormManager.proxy = newProxy;
   }
-  
+
   get proxy() {
     return this._fileUploadFormManager.proxy;
   }
