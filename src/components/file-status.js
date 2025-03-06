@@ -118,7 +118,6 @@ class FileStatus extends LitElement {
     duration: { type: Number },
     _progress: { type: Number, state: true },
     _animationInterval: { type: Number, state: true },
-    _connected: { type: Boolean, state: true },
   };
 
   constructor() {
