@@ -1,6 +1,5 @@
 import { LitElement, html, css } from "lit";
 import { when } from "lit/directives/when.js";
-import { createRef, ref } from "lit/directives/ref.js";
 import { theme } from "../theme.js";
 
 class FileUpload extends LitElement {
@@ -64,9 +63,6 @@ class FileUpload extends LitElement {
     _clientValidationErrorMessage: { state: true },
   };
 
-  fileStatus = createRef();
-  fileField = createRef();
-
   constructor() {
     super();
 
@@ -78,7 +74,6 @@ class FileUpload extends LitElement {
   }
 
   handleFileSelected(e) {
-    if (this._file) this.fileStatus.value.startAnimation();
     this._file = e.detail.file;
     this.validateFile();
   }
@@ -86,10 +81,6 @@ class FileUpload extends LitElement {
   handleNameChanged(e) {
     this._name = e.detail.value;
     this.validateName();
-  }
-
-  handleFileRemoveRequested() {
-    this.fileField.value.clearField();
   }
 
   handleFileFieldCleared() {
@@ -161,23 +152,10 @@ class FileUpload extends LitElement {
           )}
 
           <file-field
-            ${ref(this.fileField)}
             @file-selected=${this.handleFileSelected}
             @field-cleared=${this.handleFileFieldCleared}
             ?disabled=${this._isNameEmpty}
           ></file-field>
-
-          ${when(
-            this._file,
-            () =>
-              html`<file-status
-                @file-remove-requested=${this.handleFileRemoveRequested}
-                ${ref(this.fileStatus)}
-                .name=${this._file.name}
-                duration="1200"
-                delay="140"
-              ></file-status>`
-          )}
 
           <submit-button @click=${this.submit}></submit-button>
         </form>

@@ -1,12 +1,19 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { createRef, ref } from "lit/directives/ref.js";
+import { when } from "lit/directives/when.js";
 
 class FileField extends LitElement {
   static styles = css`
     ${theme.utility.borderBox}
     ${theme.utility.font}
     ${theme.styles.removeDefaultButton}
+
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
     .dropzone {
       cursor: pointer;
@@ -51,20 +58,25 @@ class FileField extends LitElement {
 
   static properties = {
     disabled: { type: Boolean, reflect: true },
+    _file: { type: Object, state: true },
   };
 
   constructor() {
     super();
 
     this.disabled = false;
+    this._file = null;
   }
 
   fileInput = createRef();
+  fileStatus = createRef();
 
   handleFileSelect(e) {
-    const file = e.target.files[0];
-    if (file) {
-      this.dispatchFileSelected(file);
+    if (this._file) this.fileStatus.value.startAnimation();
+
+    this._file = e.target.files[0];
+    if (this._file) {
+      this.dispatchFileSelected();
     }
   }
 
@@ -79,17 +91,25 @@ class FileField extends LitElement {
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      this.dispatchFileSelected(files[0]);
+      if (this._file) this.fileStatus.value.startAnimation();
+
+      this._file = files[0];
+
+      this.dispatchFileSelected();
     }
+  }
+
+  handleFileRemoveRequested() {
+    this.clearField();
   }
 
   dragover(e) {
     e.preventDefault();
   }
 
-  dispatchFileSelected(file) {
+  dispatchFileSelected() {
     const fileSelected = new CustomEvent("file-selected", {
-      detail: { file },
+      detail: { file: this._file },
       bubbles: true,
       composed: true,
     });
@@ -108,6 +128,7 @@ class FileField extends LitElement {
 
   clearField() {
     this.fileInput.value.value = null;
+    this._file = null;
     this.dispatchFieldCleared();
   }
 
@@ -127,6 +148,18 @@ class FileField extends LitElement {
           в эту область
         </p>
       </button>
+
+      ${when(
+        this._file,
+        () =>
+          html`<file-status
+            @file-remove-requested=${this.handleFileRemoveRequested}
+            ${ref(this.fileStatus)}
+            .name=${this._file.name}
+            duration="1200"
+            delay="140"
+          ></file-status>`
+      )}
 
       <input
         ?disabled=${this.disabled}
