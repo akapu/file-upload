@@ -65,8 +65,20 @@ class FormFileUpload extends LitElement {
   }
 
   handleSubmit() {
-    this._formManager.submit();
-    this.requestUpdate();
+    const submitPromise = this._formManager.submit().finally(() => {
+      this.requestUpdate(); // после загузки файла
+    });
+
+    this.requestUpdate(); // перед загузкой файла
+
+    this.dispatchSubmit(submitPromise);
+  }
+
+  dispatchSubmit(submitPromise) {
+    const submitEvent = new CustomEvent("submit", {
+      detail: { submitPromise }, // чтобы можно было отследить завершение загрузки даже если элемент удален
+    });
+    this.dispatchEvent(submitEvent);
   }
 
   render() {
