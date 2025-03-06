@@ -31,6 +31,14 @@ class FileStatus extends LitElement {
       padding-top: 2px;
 
       flex-shrink: 0;
+
+      transition: color 0.14s linear;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+
+      color: #a5a5a5;
     }
 
     animated-progress {
@@ -55,6 +63,7 @@ class FileStatus extends LitElement {
     name: { type: String },
     delay: { type: Number },
     duration: { type: Number },
+    disabled: { type: Boolean },
   };
 
   constructor() {
@@ -63,6 +72,7 @@ class FileStatus extends LitElement {
     this.delay = 0;
     this.duration = 1000;
     this.name = "";
+    this.disabled = false;
   }
 
   animatedProgress = createRef();
@@ -98,7 +108,12 @@ class FileStatus extends LitElement {
           @animation-completed=${this.dispatchAnimationCompleted}
         ></animated-progress>
 
-        <button @click=${this.dispatchFileRemoveRequest}><cross-icon width="13" height="13"></cross-icon></button>
+        <button
+          @click=${this.dispatchFileRemoveRequest}
+          ?disabled=${this.disabled}
+        >
+          <cross-icon width="13" height="13"></cross-icon>
+        </button>
       </div>
     `;
   }
