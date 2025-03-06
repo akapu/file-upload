@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
+import { classMap } from "lit/directives/class-map.js";
 
 /**
  * Обернут в компонент потому что <img> не отображает blur, а <object> не прокидывает наверх клики
@@ -9,11 +10,54 @@ class DocsImage extends LitElement {
     svg {
       color: ${theme.colors.primary};
     }
+
+    @keyframes rainbow {
+      0% {
+        color: ${theme.colors.primary};
+      }
+      14% {
+        color: red;
+      }
+      28% {
+        color: orange;
+      }
+      42% {
+        color: yellow;
+      }
+      57% {
+        color: green;
+      }
+      71% {
+        color: blue;
+      }
+      85% {
+        color: indigo;
+      }
+      100% {
+        color: ${theme.colors.primary};
+      }
+    }
+
+    .rainbow {
+      animation: rainbow 7s infinite;
+    }
   `;
+
+  static properties = {
+    rainbow: { type: Boolean },
+    _currentColor: { type: String, state: true },
+  };
+
+  constructor() {
+    super();
+
+    this.rainbow = false;
+  }
 
   render() {
     return html`
       <svg
+        class=${classMap({ rainbow: this.rainbow })}
         width="183"
         height="130"
         viewBox="0 0 183 130"

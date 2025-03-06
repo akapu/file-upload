@@ -156,11 +156,9 @@ class FileField extends LitElement {
         @dragover=${this.dragover}
         ?disabled=${this.disabled}
       >
-        <docs-image></docs-image>
+        <docs-image ?rainbow=${this.loading}></docs-image>
 
-        <p class="hint font">
-          ${this.hint}
-        </p>
+        <p class="hint font">${this.hint}</p>
       </button>
 
       ${when(
