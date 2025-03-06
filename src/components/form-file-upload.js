@@ -86,6 +86,10 @@ class FormFileUpload extends LitElement {
       return "Перед загрузкой дайте имя файлу";
     }
 
+    if (this._formManager.isSubmitting) {
+      return "Файл загружается на сервер";
+    }
+
     if (!this._formManager.isSubmitDisabled) {
       return "Загрузите ваш файл";
     }
