@@ -44,10 +44,19 @@ class FileUpload extends LitElement {
     return this._fileUploadFormManager.proxy;
   }
 
+  handleSubmit(event) {
+    this.requestUpdate(); // перед загрузкой файла
+    
+    event.details.submitPromise.then(() => this.requestUpdate()); // после загрузки файла
+  }
+
   render() {
     return html`
       <div class="window border-box">
-        <form-file-upload></form-file-upload>
+        <form-file-upload
+          .fileUploadFormManager=${this._fileUploadFormManager}
+          @submit=${this.handleSubmit}
+        ></form-file-upload>
       </div>
     `;
   }
