@@ -34,6 +34,7 @@ export class AnimatedProgress extends LitElement {
 
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       gap: 10px;
 
       font-size: 10px;
