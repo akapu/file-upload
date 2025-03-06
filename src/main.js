@@ -8,3 +8,4 @@ import "./components/submit-button";
 import "./components/cross-icon";
 import "./components/file-status";
 import "./components/progress-bar";
+import "./components/animated-progress";
