@@ -71,6 +71,15 @@ class FileStatus extends LitElement {
     this.animatedProgress.value.startAnimation();
   }
 
+  dispatchFileRemoveRequest() {
+    const fileRemoveRequested = new CustomEvent("file-remove-requested", {
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(fileRemoveRequested);
+  }
+
   render() {
     return html`
       <div class="outline border-box">
@@ -83,7 +92,7 @@ class FileStatus extends LitElement {
           .delay=${this.delay}
         ></animated-progress>
 
-        <button><cross-icon width="13" height="13"></cross-icon></button>
+        <button @click=${this.dispatchFileRemoveRequest}><cross-icon width="13" height="13"></cross-icon></button>
       </div>
     `;
   }

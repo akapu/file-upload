@@ -65,6 +65,7 @@ class FileUpload extends LitElement {
   };
 
   fileStatus = createRef();
+  fileField = createRef();
 
   constructor() {
     super();
@@ -126,6 +127,10 @@ class FileUpload extends LitElement {
       .catch((err) => console.error(err));
   }
 
+  handleFileRemoveRequested() {
+
+  }
+
   render() {
     return html`
       <div class="window border-box">
@@ -150,6 +155,7 @@ class FileUpload extends LitElement {
           )}
 
           <file-field
+            ${ref(this.fileField)}
             @file-selected=${this.handleFileSelected}
             ?disabled=${this._isNameEmpty}
           ></file-field>
@@ -158,6 +164,7 @@ class FileUpload extends LitElement {
             this._file,
             () =>
               html`<file-status
+                @file-remove-requested=${this.handleFileRemoveRequested}
                 ${ref(this.fileStatus)}
                 .name=${this._file.name}
                 duration="1200"
