@@ -166,6 +166,7 @@ class FileField extends LitElement {
         this._file,
         () =>
           html`<file-status
+            ?disabled=${this.disabled}
             @file-remove-requested=${this.handleFileRemoveRequested}
             @animation-completed=${this.handleAnimationCompleted}
             ${ref(this.fileStatus)}
