@@ -1,8 +1,4 @@
 export class FileUploadFormManager {
-  constructor(proxy = "" ) {
-    this._proxy = proxy;
-  }
-
   _file = null;
   _fileLoaded = false;
   _name = "";
@@ -10,6 +6,15 @@ export class FileUploadFormManager {
   _isFileValid = false;
   _fileValidationErrorMessage = "";
   _submitting = false;
+  _proxy = ""
+
+  set proxy(newProxy) {
+    this._proxy = newProxy;
+  }
+
+  get proxy() {
+    return this._proxy;
+  }
 
   set file(newFile) {
     this._file = newFile;

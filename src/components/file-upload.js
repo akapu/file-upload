@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
+import { FileUploadFormManager } from "../FileUploadFormManager.js";
 
 class FileUpload extends LitElement {
   static styles = css`
@@ -21,6 +22,25 @@ class FileUpload extends LitElement {
       );
     }
   `;
+
+  static properties = {
+    proxy: { type: String },
+    _fileUploadFormManager: { type: Object, state: true },
+  };
+
+  constructor() {
+    super();
+
+    this._fileUploadFormManager = new FileUploadFormManager();
+  }
+
+  set proxy(newProxy) {
+    this._fileUploadFormManager.proxy = newProxy;
+  }
+  
+  get proxy() {
+    return this._fileUploadFormManager.proxy;
+  }
 
   render() {
     return html`
