@@ -147,7 +147,7 @@ class FileUpload extends LitElement {
           ${when(
             !this._file,
             () => html`
-              <text-field @value-changed=${this.handleNameChanged}></text-field>
+              <text-field @value-changed=${this.handleNameChanged} .value=${this._name}></text-field>
             `
           )}
 

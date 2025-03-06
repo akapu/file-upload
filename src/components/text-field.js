@@ -54,15 +54,13 @@ class TextField extends LitElement {
 
   static properties = {
     disabled: { type: Boolean },
-    _active: { type: Boolean, state: true },
-    _value: { type: String, state: true },
+    value: { type: String },
   };
 
   constructor() {
     super();
     this.disabled = false;
-    this._active = false;
-    this._value = "";
+    this.value = "";
   }
 
   dispatchChangeEvent(newValue) {
@@ -82,19 +80,22 @@ class TextField extends LitElement {
 
   setValue(value) {
     this.dispatchChangeEvent(value);
-    this._active = Boolean(value);
-    this._value = value;
+    this.value = value;
   }
 
   clearValue() {
     this.setValue("");
   }
 
+  get active() {
+    return Boolean(this.value)
+  }
+
   render() {
     return html`
       <div class="text-field">
         <input
-          .value=${this._value}
+          .value=${this.value}
           class="border-box font"
           type="text"
           placeholder="Название файла"
@@ -103,8 +104,8 @@ class TextField extends LitElement {
         />
 
         <button
-          ?disabled=${!this._active}
-          class=${classMap({ "clear-button": true, active: this._active })}
+          ?disabled=${!this.active}
+          class=${classMap({ "clear-button": true, active: this.active })}
           @click=${this.clearValue}
         >
           <cross-icon></cross-icon>
