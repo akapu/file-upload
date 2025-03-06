@@ -13,7 +13,8 @@ export class AnimatedProgress extends LitElement {
     }
 
     .info {
-      flex-grow: 1;
+      flex: 1 1 auto;
+      min-width: 0;
 
       display: flex;
       flex-direction: column;
