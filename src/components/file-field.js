@@ -57,6 +57,7 @@ class FileField extends LitElement {
   `;
 
   static properties = {
+    loading: { type: Boolean },
     disabled: { type: Boolean, reflect: true },
     _file: { type: Object, state: true },
   };
@@ -66,6 +67,7 @@ class FileField extends LitElement {
 
     this.disabled = false;
     this._file = null;
+    this.loading = false;
   }
 
   fileInput = createRef();
@@ -138,6 +140,13 @@ class FileField extends LitElement {
     this.dispatchEvent(fileLoaded);
   }
 
+  get hint() {
+    return this.loading
+      ? "Файл загружается на сервер"
+      : html`Перенесите ваш файл <br />
+          в эту область`;
+  }
+
   render() {
     return html`
       <button
@@ -150,8 +159,7 @@ class FileField extends LitElement {
         <docs-image></docs-image>
 
         <p class="hint font">
-          Перенесите ваш файл <br />
-          в эту область
+          ${this.hint}
         </p>
       </button>
 

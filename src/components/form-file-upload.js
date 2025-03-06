@@ -122,6 +122,7 @@ class FormFileUpload extends LitElement {
           @file-selected=${this.handleFileSelected}
           @file-loaded=${this.handleFileLoaded}
           ?disabled=${this._formManager.isFileFieldDisabled}
+          ?loading=${this._formManager.isSubmitting}
         ></file-field>
 
         <submit-button
