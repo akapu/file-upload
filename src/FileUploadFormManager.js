@@ -1,6 +1,7 @@
 export class FileUploadFormManager {
-  constructor(proxy = "") {
+  constructor(proxy = "", submitCallback = () => {}) {
     this._proxy = proxy;
+    this._submitCallback = submitCallback; // Вызывается после успешной загрузки или ошибки при загрузке
   }
 
   _file = null;
@@ -98,6 +99,9 @@ export class FileUploadFormManager {
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((err) => console.error(err))
-      .then(() => (this._submitting = false));
+      .then(() => {
+        this._submitting = false;
+        this._submitCallback();
+      });
   }
 }
