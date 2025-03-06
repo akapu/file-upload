@@ -57,6 +57,10 @@ export class FileUploadFormManager {
     return Boolean(this._file);
   }
 
+  get isSubmitting() {
+    return this._submitting;
+  }
+
   #validateName() {
     this._isNameValid = this._name !== "";
   }
