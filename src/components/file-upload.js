@@ -57,6 +57,7 @@ class FileUpload extends LitElement {
 
   static properties = {
     _file: { state: true },
+    _fileLoaded: { type: Boolean, state: true },
     _name: { state: true },
     _isNameEmpty: { state: true },
     _clientValidationError: { state: true },
@@ -67,6 +68,7 @@ class FileUpload extends LitElement {
     super();
 
     this._file = null;
+    this._fileLoaded = false;
     this._name = "";
     this._isNameEmpty = true;
     this._clientValidationError = false;
@@ -75,6 +77,7 @@ class FileUpload extends LitElement {
 
   handleFileSelected(e) {
     this._file = e.detail.file;
+    this._fileLoaded = false;
     this.validateFile();
   }
 
@@ -85,8 +88,13 @@ class FileUpload extends LitElement {
 
   handleFileFieldCleared() {
     this._file = null;
+    this._fileLoaded = false;
     this._clientValidationError = false;
     this._clientValidationErrorMessage = "";
+  }
+
+  handleFileLoaded() {
+    this._fileLoaded = true;
   }
 
   validateName() {
@@ -129,7 +137,12 @@ class FileUpload extends LitElement {
   }
 
   get submitDisabled() {
-    return this._isNameEmpty || this._clientValidationError || !this._file;
+    return (
+      this._isNameEmpty ||
+      this._clientValidationError ||
+      !this._file ||
+      !this._fileLoaded
+    );
   }
 
   render() {
@@ -161,6 +174,7 @@ class FileUpload extends LitElement {
           <file-field
             @file-selected=${this.handleFileSelected}
             @field-cleared=${this.handleFileFieldCleared}
+            @file-loaded=${this.handleFileLoaded}
             ?disabled=${this._isNameEmpty}
           ></file-field>
 

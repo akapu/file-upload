@@ -132,6 +132,19 @@ class FileField extends LitElement {
     this.dispatchFieldCleared();
   }
 
+  handleAnimationCompleted() {
+    this.dispatchFileLoaded();
+  }
+
+  dispatchFileLoaded() {
+    const fileLoaded = new CustomEvent("file-loaded", {
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(fileLoaded);
+  }
+
   render() {
     return html`
       <button
@@ -154,6 +167,7 @@ class FileField extends LitElement {
         () =>
           html`<file-status
             @file-remove-requested=${this.handleFileRemoveRequested}
+            @animation-completed=${this.handleAnimationCompleted}
             ${ref(this.fileStatus)}
             .name=${this._file.name}
             duration="1200"

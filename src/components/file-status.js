@@ -80,6 +80,11 @@ class FileStatus extends LitElement {
     this.dispatchEvent(fileRemoveRequested);
   }
 
+  dispatchAnimationCompleted() {
+    const animationCompleted = new CustomEvent("animation-completed", {});
+    this.dispatchEvent(animationCompleted);
+  }
+
   render() {
     return html`
       <div class="outline border-box">
@@ -90,6 +95,7 @@ class FileStatus extends LitElement {
           .name=${this.name}
           .duration=${this.duration}
           .delay=${this.delay}
+          @animation-completed=${this.dispatchAnimationCompleted}
         ></animated-progress>
 
         <button @click=${this.dispatchFileRemoveRequest}><cross-icon width="13" height="13"></cross-icon></button>

@@ -152,9 +152,23 @@ export class AnimatedProgress extends LitElement {
     };
   }
 
+  handleTransitionEnd(e) {
+    if (e.target === e.currentTarget) {
+      this.dispatchAnimationCompleted();
+    }
+  }
+
+  dispatchAnimationCompleted() {
+    const event = new CustomEvent("animation-completed", {});
+    this.dispatchEvent(event);
+  }
+
   render() {
     return html`
-      <div class=${classMap(this.infoClasses)}>
+      <div
+        class=${classMap(this.infoClasses)}
+        @transitionend=${this.handleTransitionEnd}
+      >
         <div class="text-info font">
           <span class=${classMap(this.nameTextInfoClasses)}>
             ${this.name}
