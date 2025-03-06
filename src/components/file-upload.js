@@ -62,6 +62,7 @@ class FileUpload extends LitElement {
     _isNameEmpty: { state: true },
     _clientValidationError: { state: true },
     _clientValidationErrorMessage: { state: true },
+    _submitting: { state: true },
   };
 
   constructor() {
@@ -121,8 +122,11 @@ class FileUpload extends LitElement {
   }
 
   submit() {
+    this._submitting = true;
+
     const proxy = "https://corsproxy.io/?url=";
     const url = "https://file-upload-server-mc26.onrender.com/api/v1/upload";
+
     const formData = new FormData();
     formData.append("file", this._file);
     formData.append("name", this._name);
@@ -133,7 +137,8 @@ class FileUpload extends LitElement {
     })
       .then((res) => res.json())
       .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .then(() => (this._submitting = false));
   }
 
   get submitDisabled() {
@@ -141,8 +146,13 @@ class FileUpload extends LitElement {
       this._isNameEmpty ||
       this._clientValidationError ||
       !this._file ||
-      !this._fileLoaded
+      !this._fileLoaded ||
+      this._submitting
     );
+  }
+
+  get fileFieldDisabled() {
+    return this._isNameEmpty || this._submitting;
   }
 
   render() {
@@ -175,7 +185,7 @@ class FileUpload extends LitElement {
             @file-selected=${this.handleFileSelected}
             @field-cleared=${this.handleFileFieldCleared}
             @file-loaded=${this.handleFileLoaded}
-            ?disabled=${this._isNameEmpty}
+            ?disabled=${this.fileFieldDisabled}
           ></file-field>
 
           <submit-button
