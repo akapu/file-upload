@@ -55,12 +55,17 @@ class FormFileUpload extends LitElement {
   }
 
   handleNameChanged(e) {
-    this._formManager.name= e.detail.value;
+    this._formManager.name = e.detail.value;
     this.requestUpdate();
   }
 
   handleFileLoaded() {
-    this._formManager.fileLoaded= true;
+    this._formManager.fileLoaded = true;
+    this.requestUpdate();
+  }
+
+  handleSubmit() {
+    this._formManager.submit();
     this.requestUpdate();
   }
 
@@ -96,7 +101,7 @@ class FormFileUpload extends LitElement {
         ></file-field>
 
         <submit-button
-          @click=${this._formManager.submit}
+          @click=${this.handleSubmit}
           ?disabled=${this._formManager.isSubmitDisabled}
         ></submit-button>
       </form>

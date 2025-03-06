@@ -1,5 +1,5 @@
 export class FileUploadFormManager {
-  constructor(proxy) {
+  constructor(proxy = "") {
     this._proxy = proxy;
   }
 
@@ -43,7 +43,7 @@ export class FileUploadFormManager {
   get isFileFieldDisabled() {
     return !this._isNameValid || this._submitting;
   }
-  
+
   get isNameValid() {
     return this._isNameValid;
   }
@@ -61,6 +61,7 @@ export class FileUploadFormManager {
       this._fileLoaded = false;
       this._isFileValid = false;
       this._fileValidationErrorMessage = "";
+      return;
     }
 
     if (this._file.size > 1024) {
