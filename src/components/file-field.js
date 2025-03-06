@@ -119,19 +119,10 @@ class FileField extends LitElement {
     this.dispatchEvent(fileSelected);
   }
 
-  dispatchFieldCleared() {
-    const fieldCleared = new CustomEvent("field-cleared", {
-      bubbles: true,
-      composed: true,
-    });
-
-    this.dispatchEvent(fieldCleared);
-  }
-
   clearField() {
     this.fileInput.value.value = null;
     this._file = null;
-    this.dispatchFieldCleared();
+    this.dispatchFileSelected();
   }
 
   handleAnimationCompleted() {
