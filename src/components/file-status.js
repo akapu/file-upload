@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { when } from "lit/directives/when.js";
+import { classMap } from "lit/directives/class-map.js";
 
 class FileStatus extends LitElement {
   static styles = css`
@@ -40,8 +41,15 @@ class FileStatus extends LitElement {
 
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       gap: 7px;
+    }
+
+    .initial-info {
+      height: 100%;
+    }
+
+    .finish-info {
+      height: 19px;
     }
 
     .text-info {
@@ -55,6 +63,19 @@ class FileStatus extends LitElement {
       line-height: 12px;
     }
 
+    .transition {
+      transition-duration: 0.6s;
+      transition-timing-function: linear;
+    }
+
+    .info-transition {
+      transition-property: height;
+    }
+
+    .text-info-transition {
+      transition-property: font-size, line-height;
+    }
+
     .name-text-info {
       font-weight: 500;
 
@@ -65,9 +86,19 @@ class FileStatus extends LitElement {
       min-width: 0;
     }
 
+    .finish-name-text-info {
+      font-size: 15.5333px;
+      line-height: 19px;
+    }
+
     .progress-text-info {
       font-weight: 400;
       flex-shrink: 0;
+    }
+
+    .finish-progress-text-info {
+      font-size: 13.8462px;
+      line-height: 17px;
     }
 
     .indicator {
@@ -114,7 +145,7 @@ class FileStatus extends LitElement {
     clearInterval(this._animationInterval);
 
     this._animationInterval = setInterval(() => {
-      if (this._progress === 100) {
+      if (this.progressCompleted) {
         clearInterval(this._animationInterval);
         return;
       }
@@ -123,16 +154,51 @@ class FileStatus extends LitElement {
     }, delayBetweenFrames);
   }
 
+  get progressCompleted() {
+    return this._progress === 100;
+  }
+
+  get infoClasses() {
+    return {
+      "transition": this.progressCompleted,
+      "info-transition": this.progressCompleted,
+      info: true,
+      "initial-info": !this.progressCompleted,
+      "finish-info": this.progressCompleted,
+    };
+  }
+  get nameTextInfoClasses() {
+    return {
+      "transition": this.progressCompleted,
+      "text-info-transition": this.progressCompleted,
+      "name-text-info": true,
+      "finish-name-text-info": this.progressCompleted,
+    };
+  }
+
+  get progressTextInfoClasses() {
+    return {
+      "transition": this.progressCompleted,
+      "text-info-transition": this.progressCompleted,
+      "progress-text-info": true,
+      "finish-progress-text-info": this.progressCompleted,
+    };
+  }
+
   render() {
     return html`
       <div class="outline border-box font">
         <div class="indicator"></div>
 
-        <div class="info">
+        <div class=${classMap(this.infoClasses)}>
           <div class="text-info font">
-            <span class="name-text-info"> ${this.name} </span>
+            <span class=${classMap(this.nameTextInfoClasses)}>
+              ${this.name}
+            </span>
 
-            <span class="progress-text-info"> ${this._progress}% </span>
+            <span class=${classMap(this.progressTextInfoClasses)}>
+              ${this._progress}%
+            </span>
           </div>
 
           ${when(
