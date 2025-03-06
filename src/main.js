@@ -9,3 +9,4 @@ import "./components/cross-icon";
 import "./components/file-status";
 import "./components/progress-bar";
 import "./components/animated-progress";
+import "./components/form-file-upload";
