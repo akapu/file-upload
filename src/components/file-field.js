@@ -75,6 +75,8 @@ class FileField extends LitElement {
     if (this._file) this.fileStatus.value.startAnimation();
 
     this._file = e.target.files[0];
+    this.fileInput.value.value = null;
+
     if (this._file) {
       this.dispatchFileSelected();
     }
