@@ -11,15 +11,19 @@ class CloseButton extends LitElement {
       height: 34px;
       border-radius: 17px;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
       cursor: pointer;
+
+      position: relative;
+
+      background: #ccccce47;
     }
 
     cross-icon {
       color: white;
+
+      position: absolute;
+      top: 9px;
+      left: 9px;
     }
   `;
 
