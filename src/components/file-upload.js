@@ -15,12 +15,21 @@ class FileUpload extends LitElement {
       padding-right: 13px;
       padding-bottom: 12px;
       padding-left: 13px;
+
       background: linear-gradient(
         180deg,
         ${theme.colors.primary} 0%,
         #dddcfc 42.5%,
         #ffffff 100%
       );
+
+      display: flex;
+      align-items: center;
+    }
+
+    form-file-upload {
+      flex-grow: 1 1 auto;
+      min-width: 0;
     }
 
     close-button {
@@ -34,13 +43,16 @@ class FileUpload extends LitElement {
     // сначала с предоставленного эдпоинта в браузере нельзя было прочитать ответ из-за CORS
     // использование прокси решало проблему, сейчас неактуально
     proxy: { type: String },
+
     _fileUploadFormManager: { type: Object, state: true },
+    _stage: { type: String, state: true },
   };
 
   constructor() {
     super();
 
     this._fileUploadFormManager = new FileUploadFormManager();
+    this._stage = "upload";
   }
 
   set proxy(newProxy) {
@@ -51,10 +63,14 @@ class FileUpload extends LitElement {
     return this._fileUploadFormManager.proxy;
   }
 
+  openResult() {
+    this._stage = "form leaving";
+  }
+
   handleSubmit(event) {
     this.requestUpdate(); // перед загрузкой файла
 
-    event.detail.submitPromise.then(() => this.requestUpdate()); // после загрузки файла
+    event.detail.submitPromise.then(() => this.openResult()); // после загрузки файла
   }
 
   handleCloseButtonClick() {
@@ -76,6 +92,7 @@ class FileUpload extends LitElement {
         <close-button @click=${this.handleCloseButtonClick}></close-button>
 
         <form-file-upload
+          .leaving=${this._stage === "form leaving"}
           .fileUploadFormManager=${this._fileUploadFormManager}
           @submit=${this.handleSubmit}
         ></form-file-upload>

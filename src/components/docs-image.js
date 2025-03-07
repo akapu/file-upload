@@ -9,6 +9,17 @@ class DocsImage extends LitElement {
   static styles = css`
     svg {
       color: ${theme.colors.primary};
+      width: 183px;
+      height: 130px;
+
+      transition-property: width, height;
+      transition-duration: 0.22s;
+      transition-timing-function: linear;
+    }
+
+    .decreasing {
+      width: 0px;
+      height: 0px;
     }
 
     @keyframes rainbow {
@@ -45,21 +56,23 @@ class DocsImage extends LitElement {
 
   static properties = {
     rainbow: { type: Boolean },
-    _currentColor: { type: String, state: true },
+    decreasing: { type: Boolean },
   };
 
   constructor() {
     super();
 
     this.rainbow = false;
+    this.decreasing = false;
   }
 
   render() {
     return html`
       <svg
-        class=${classMap({ rainbow: this.rainbow })}
-        width="183"
-        height="130"
+        class=${classMap({
+          rainbow: this.rainbow,
+          decreasing: this.decreasing,
+        })}
         viewBox="0 0 183 130"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

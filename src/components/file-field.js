@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { createRef, ref } from "lit/directives/ref.js";
 import { when } from "lit/directives/when.js";
+import { classMap } from "lit/directives/class-map.js";
 
 class FileField extends LitElement {
   static styles = css`
@@ -12,6 +13,7 @@ class FileField extends LitElement {
     :host {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 10px;
     }
 
@@ -34,6 +36,19 @@ class FileField extends LitElement {
       flex-direction: column;
       align-items: center;
       gap: 14px;
+
+      transition-duration: 0.22s;
+      transition-timing-function: linear;
+      transition-property: width, height, border-radius, opacity;
+    }
+
+    .dropzone.decreasing {
+      height: 37.5px;
+      width: 40px;
+
+      border-radius: 4.37743px;
+
+      opacity: 0;
     }
 
     .dropzone:disabled {
@@ -45,10 +60,17 @@ class FileField extends LitElement {
       margin: 0;
       color: ${theme.colors.primary};
 
+      flex-shrink: 1;
+      overflow: hidden;
+
       font-weight: 400;
       font-size: 14px;
       line-height: 17px;
       text-align: center;
+    }
+
+    file-status {
+      align-self: stretch;
     }
 
     input {
@@ -59,6 +81,7 @@ class FileField extends LitElement {
   static properties = {
     loading: { type: Boolean },
     disabled: { type: Boolean, reflect: true },
+    decreasing: { type: Boolean },
     _file: { type: Object, state: true },
   };
 
@@ -68,6 +91,7 @@ class FileField extends LitElement {
     this.disabled = false;
     this._file = null;
     this.loading = false;
+    this.decreasing = false;
   }
 
   fileInput = createRef();
@@ -147,16 +171,27 @@ class FileField extends LitElement {
           в эту область`;
   }
 
+  get dropzoneClasses() {
+    return {
+      decreasing: this.decreasing,
+      dropzone: true,
+      "border-box": true,
+    };
+  }
+
   render() {
     return html`
       <button
-        class="dropzone border-box"
+        class=${classMap(this.dropzoneClasses)}
         @click=${this.passClickToInput}
         @drop=${this.drop}
         @dragover=${this.dragover}
         ?disabled=${this.disabled}
       >
-        <docs-image ?rainbow=${this.loading}></docs-image>
+        <docs-image
+          ?rainbow=${this.loading}
+          ?decreasing=${this.decreasing}
+        ></docs-image>
 
         <p class="hint font">${this.hint}</p>
       </button>

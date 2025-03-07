@@ -41,12 +41,14 @@ class FormFileUpload extends LitElement {
 
   static properties = {
     _formManager: { type: Object, state: true },
+    leaving: { type: Boolean },
   };
 
   constructor() {
     super();
 
     this._formManager = new FileUploadFormManager();
+    this.leaving = false;
   }
 
   handleFileSelected(e) {
@@ -103,9 +105,7 @@ class FormFileUpload extends LitElement {
         <header class="font">
           <h2 class="title">Загрузочное окно</h2>
 
-          <p class="hint">
-            ${this.hint}
-          </p>
+          <p class="hint">${this.hint}</p>
         </header>
 
         ${when(
@@ -123,6 +123,7 @@ class FormFileUpload extends LitElement {
           @file-loaded=${this.handleFileLoaded}
           ?disabled=${this._formManager.isFileFieldDisabled}
           ?loading=${this._formManager.isSubmitting}
+          ?decreasing=${this.leaving}
         ></file-field>
 
         <submit-button
