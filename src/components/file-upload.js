@@ -7,6 +7,7 @@ class FileUpload extends LitElement {
     ${theme.utility.borderBox}
 
     .window {
+      position: relative;
       width: 302px;
       height: 479px;
       border-radius: 22px;
@@ -20,6 +21,12 @@ class FileUpload extends LitElement {
         #dddcfc 42.5%,
         #ffffff 100%
       );
+    }
+
+    close-button {
+      position: absolute;
+      top: 11px;
+      right: 12px;
     }
   `;
 
@@ -46,13 +53,28 @@ class FileUpload extends LitElement {
 
   handleSubmit(event) {
     this.requestUpdate(); // перед загрузкой файла
-    
+
     event.detail.submitPromise.then(() => this.requestUpdate()); // после загрузки файла
+  }
+
+  handleCloseButtonClick() {
+    this.dispatchCloseEvent();
+  }
+
+  dispatchCloseEvent() {
+    const closeEvent = new CustomEvent("close", {
+      bubbles: true,
+      composed: true,
+    });
+
+    this.dispatchEvent(closeEvent);
   }
 
   render() {
     return html`
       <div class="window border-box">
+        <close-button @click=${this.handleCloseButtonClick}></close-button>
+
         <form-file-upload
           .fileUploadFormManager=${this._fileUploadFormManager}
           @submit=${this.handleSubmit}
