@@ -1,6 +1,8 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { FileUploadFormManager } from "../FileUploadFormManager.js";
+import { FormResultToggleAnimationFrames } from "../FormResultToggleAnimationFrames.js";
+import { ref, createRef } from "lit/directives/ref.js";
 
 class FileUpload extends LitElement {
   static styles = css`
@@ -48,12 +50,38 @@ class FileUpload extends LitElement {
     _stage: { type: String, state: true },
   };
 
+  static Stages = {
+    UPLOAD: "upload",
+    FORM_LEAVING: "form leaving",
+  };
+
   constructor() {
     super();
 
     this._fileUploadFormManager = new FileUploadFormManager();
-    this._stage = "upload";
+    this._stage = FileUpload.Stages.UPLOAD;
   }
+
+  _window = createRef();
+  _formResultToggleAnimationFrames = new FormResultToggleAnimationFrames([
+    { keyframe: {}, stage: 0 },
+    { keyframe: {}, stage: 1 },
+    { keyframe: { height: "310px" }, stage: 2 },
+    {
+      keyframe: {
+        height: "230px",
+        background: "linear-gradient(180deg, red 0%, #ffffff 100%)",
+      },
+      stage: 3,
+    },
+    {
+      keyframe: {
+        height: "230px",
+        background: `linear-gradient(180deg, red 0%, ${theme.colors.primary} 100%)`,
+      },
+      stage: 4,
+    },
+  ]);
 
   set proxy(newProxy) {
     this._fileUploadFormManager.proxy = newProxy;
@@ -64,7 +92,15 @@ class FileUpload extends LitElement {
   }
 
   openResult() {
-    this._stage = "form leaving";
+    this._stage = FileUpload.Stages.FORM_LEAVING;
+
+    this._window.value.animate(
+      this._formResultToggleAnimationFrames.keyframesWithOffsets,
+      {
+        duration: this._formResultToggleAnimationFrames.totalDuration,
+        fill: "forwards",
+      }
+    );
   }
 
   handleSubmit(event) {
@@ -86,13 +122,17 @@ class FileUpload extends LitElement {
     this.dispatchEvent(closeEvent);
   }
 
+  get showForm() {
+    return this._stage === FileUpload.Stages.UPLOAD;
+  }
+
   render() {
     return html`
-      <div class="window border-box">
+      <div ${ref(this._window)} class="window border-box">
         <close-button @click=${this.handleCloseButtonClick}></close-button>
 
         <form-file-upload
-          .leaving=${this._stage === "form leaving"}
+          .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
           .fileUploadFormManager=${this._fileUploadFormManager}
           @submit=${this.handleSubmit}
         ></form-file-upload>
