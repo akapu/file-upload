@@ -1,5 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { theme } from "../theme";
+import { repeat } from "lit/directives/repeat.js";
+import { styleMap } from "lit/directives/style-map.js";
 
 export class FileUploadBackground extends LitElement {
   static styles = css`
@@ -16,20 +18,35 @@ export class FileUploadBackground extends LitElement {
     .background {
       width: 100%;
       height: 100%;
-    }
 
-    .form {
-      background: linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #dddcfc 42.5%,
-        #ffffff 100%
-      );
+      transition-property: opacity;
+      transition-timing-function: linear;
+
+      opacity: 0;
     }
   `;
 
+  static properties = {
+    background: { type: String },
+    duration: { type: Number },
+  };
+
   render() {
-    return html` <div class="form background"></div> `;
+    return html` ${repeat(
+      Object.entries(theme.windowBackgrounds),
+      ([background]) => background,
+      ([background, styles]) =>
+        html`
+          <div
+            class="background"
+            style=${styleMap({
+              ...styles,
+              opacity: this.background === background ? 1 : 0,
+              "transition-duration": this.duration + "ms",
+            })}
+          ></div>
+        `
+    )}`;
   }
 }
 
