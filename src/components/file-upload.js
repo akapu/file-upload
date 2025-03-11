@@ -1,8 +1,9 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { FileUploadFormManager } from "../FileUploadFormManager.js";
-import { FormResultToggleAnimationFrames } from "../FormResultToggleAnimationFrames.js";
+import { KeyframesComposer } from "../KeyframesComposer.js";
 import { ref, createRef } from "lit/directives/ref.js";
+import { when } from "lit/directives/when.js";
 
 class FileUpload extends LitElement {
   static styles = css`
@@ -53,6 +54,7 @@ class FileUpload extends LitElement {
   static Stages = {
     UPLOAD: "upload",
     FORM_LEAVING: "form leaving",
+    RESULT_ENTERING: "result entering",
   };
 
   constructor() {
@@ -60,28 +62,34 @@ class FileUpload extends LitElement {
 
     this._fileUploadFormManager = new FileUploadFormManager();
     this._stage = FileUpload.Stages.UPLOAD;
+
+    this.initializeAnimations();
+  }
+
+  initializeAnimations() {
+    this._formToResultBeforeResult = new KeyframesComposer(
+      theme.animationDurations.formToResult
+    );
+    this._formToResultBeforeResult.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      { keyframe: {}, stage: 1 },
+      { keyframe: { height: "310px" }, stage: 2 },
+    ]);
+
+    this._formToResultAfterResult = new KeyframesComposer(
+      theme.animationDurations.formToResult
+    );
+    this._formToResultAfterResult.setKeyframes([
+      {
+        keyframe: {
+          height: "230px",
+        },
+        stage: 3,
+      },
+    ]);
   }
 
   _window = createRef();
-  _formResultToggleAnimationFrames = new FormResultToggleAnimationFrames([
-    { keyframe: {}, stage: 0 },
-    { keyframe: {}, stage: 1 },
-    { keyframe: { height: "310px" }, stage: 2 },
-    {
-      keyframe: {
-        height: "230px",
-        background: "linear-gradient(180deg, red 0%, #ffffff 100%)",
-      },
-      stage: 3,
-    },
-    {
-      keyframe: {
-        height: "230px",
-        background: `linear-gradient(180deg, red 0%, ${theme.colors.primary} 100%)`,
-      },
-      stage: 4,
-    },
-  ]);
 
   set proxy(newProxy) {
     this._fileUploadFormManager.proxy = newProxy;
@@ -91,16 +99,26 @@ class FileUpload extends LitElement {
     return this._fileUploadFormManager.proxy;
   }
 
-  openResult() {
+  async openResult() {
     this._stage = FileUpload.Stages.FORM_LEAVING;
 
-    this._window.value.animate(
-      this._formResultToggleAnimationFrames.keyframesWithOffsets,
+    await this._window.value.animate(
+      this._formToResultBeforeResult.keyframesWithOffsets,
       {
-        duration: this._formResultToggleAnimationFrames.totalDuration,
+        duration: this._formToResultBeforeResult.totalDuration,
         fill: "forwards",
       }
-    );
+    ).finished;
+
+    this._stage = FileUpload.Stages.RESULT_ENTERING;
+
+    await this._window.value.animate(
+      this._formToResultAfterResult.keyframesWithOffsets,
+      {
+        duration: this._formToResultAfterResult.totalDuration,
+        fill: "forwards",
+      }
+    ).finished;
   }
 
   handleSubmit(event) {
@@ -123,7 +141,12 @@ class FileUpload extends LitElement {
   }
 
   get showForm() {
-    return this._stage === FileUpload.Stages.UPLOAD;
+    const stagesToShowForm = [
+      FileUpload.Stages.UPLOAD,
+      FileUpload.Stages.FORM_LEAVING,
+    ];
+
+    return stagesToShowForm.includes(this._stage);
   }
 
   render() {
@@ -131,11 +154,15 @@ class FileUpload extends LitElement {
       <div ${ref(this._window)} class="window border-box">
         <close-button @click=${this.handleCloseButtonClick}></close-button>
 
-        <form-file-upload
-          .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
-          .fileUploadFormManager=${this._fileUploadFormManager}
-          @submit=${this.handleSubmit}
-        ></form-file-upload>
+        ${when(this.showForm, () => {
+          return html`
+            <form-file-upload
+              .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
+              .fileUploadFormManager=${this._fileUploadFormManager}
+              @submit=${this.handleSubmit}
+            ></form-file-upload>
+          `;
+        })}
       </div>
     `;
   }
