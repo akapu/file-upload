@@ -1,5 +1,5 @@
 import { LitElement, css, html } from "lit";
-import { theme } from "../theme";
+import { windowBackgrounds } from "../theme";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -33,7 +33,7 @@ export class FileUploadBackground extends LitElement {
 
   render() {
     return html` ${repeat(
-      Object.entries(theme.windowBackgrounds),
+      Object.entries(windowBackgrounds),
       ([background]) => background,
       ([background, styles]) =>
         html`
