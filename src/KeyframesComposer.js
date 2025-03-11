@@ -1,19 +1,19 @@
 // Аннотируем офсетами кейфреймы, вычисляем общую длительность
-export class FormResultToggleAnimationFrames {
-  static StageDurations = [0, 220, 200, 90, 200];
-
-  constructor(keyframesWithStages) {
-    for (const { keyframe, stage } of keyframesWithStages) {
-      this.setKeyframe(stage, keyframe);
-    }
+export class KeyframesComposer {
+  constructor(stageDurations) {
+    this._stageDurations = stageDurations;
   }
 
-  _keyframeStageMap = Array(
-    FormResultToggleAnimationFrames.StageDurations.length
-  );
+  _keyframeStageMap = Array(this._stageDurations.length);
 
   setKeyframe(stage, keyframe) {
     this._keyframeStageMap[stage] = keyframe;
+  }
+
+  setKeyframes(keyframesWithStages) {
+    for (const { keyframe, stage } of keyframesWithStages) {
+      this.setKeyframe(stage, keyframe);
+    }
   }
 
   get _firstKeyframeIndex() {
@@ -25,7 +25,7 @@ export class FormResultToggleAnimationFrames {
   }
 
   get _usedDurations() {
-    return FormResultToggleAnimationFrames.StageDurations.slice(
+    return this._stageDurations.slice(
       this._firstKeyframeIndex,
       this._lastKeyframeIndex + 1
     );
