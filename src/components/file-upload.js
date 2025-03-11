@@ -19,15 +19,10 @@ class FileUpload extends LitElement {
       padding-bottom: 12px;
       padding-left: 13px;
 
-      background: linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #dddcfc 42.5%,
-        #ffffff 100%
-      );
-
       display: flex;
       align-items: center;
+
+      overflow: hidden;
     }
 
     form-file-upload {
@@ -152,6 +147,8 @@ class FileUpload extends LitElement {
   render() {
     return html`
       <div ${ref(this._window)} class="window border-box">
+        <file-upload-background></file-upload-background>
+
         <close-button @click=${this.handleCloseButtonClick}></close-button>
 
         ${when(this.showForm, () => {
