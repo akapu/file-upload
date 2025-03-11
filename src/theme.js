@@ -34,50 +34,50 @@ export const theme = {
     primary: css`#5f5cf0`,
   },
 
-  windowBackgrounds: {
-    form: {
-      background: `linear-gradient(
+  animationDurations: {
+    formToResult: [0, 220, 200, 90, 200],
+  },
+};
+
+export const windowBackgrounds = {
+  form: {
+    background: `linear-gradient(
         180deg,
         ${theme.colors.primary} 0%,
         #dddcfc 42.5%,
         #ffffff 100%
       );`,
-    },
-
-    resultSuccess: {
-      background: `linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #8f8df4 100%
-      );`,
-    },
-
-    intermediateSuccess: {
-      background: `linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #DDDCFC 100%
-      );`,
-    },
-
-    intermediateError: {
-      background: `linear-gradient(
-        180deg,
-        #f05c5c 0%,
-        #DDDCFC 100%
-      );`,
-    },
-
-    resultError: {
-      background: `linear-gradient(
-        180deg,
-        #f05c5c 0%,
-        #8f8df4 100%
-      );`,
-    },
   },
 
-  animationDurations: {
-    formToResult: [0, 220, 200, 90, 200],
+  resultSuccess: {
+    background: `linear-gradient(
+        180deg,
+        ${theme.colors.primary} 0%,
+        #8f8df4 100%
+      );`,
+  },
+
+  intermediateSuccess: {
+    background: `linear-gradient(
+        180deg,
+        ${theme.colors.primary} 0%,
+        #DDDCFC 100%
+      );`,
+  },
+
+  intermediateError: {
+    background: `linear-gradient(
+        180deg,
+        #f05c5c 0%,
+        #DDDCFC 100%
+      );`,
+  },
+
+  resultError: {
+    background: `linear-gradient(
+        180deg,
+        #f05c5c 0%,
+        #8f8df4 100%
+      );`,
   },
 };
