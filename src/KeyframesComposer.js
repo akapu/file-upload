@@ -2,9 +2,8 @@
 export class KeyframesComposer {
   constructor(stageDurations) {
     this._stageDurations = stageDurations;
+    this._keyframeStageMap = Array(this._stageDurations.length);
   }
-
-  _keyframeStageMap = Array(this._stageDurations.length);
 
   setKeyframe(stage, keyframe) {
     this._keyframeStageMap[stage] = keyframe;
