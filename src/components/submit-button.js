@@ -27,6 +27,7 @@ class SubmitButton extends LitElement {
       padding-left: 86px;
 
       transition: background-color 0.6s linear;
+      transition: width, height 0.22s linear;
     }
 
     button:disabled {
@@ -38,12 +39,14 @@ class SubmitButton extends LitElement {
 
   static properties = {
     disabled: { type: Boolean },
+    decreasing: { type: Boolean },
   };
 
   constructor() {
     super();
 
     this.disabled = false;
+    this.decreasing = false;
   }
 
   render() {
