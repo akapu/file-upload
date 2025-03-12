@@ -15,34 +15,34 @@ class FormFileUpload extends LitElement {
   `;
 
   static properties = {
-    _formManager: { type: Object, state: true },
+    formManager: { type: Object },
     leaving: { type: Boolean },
   };
 
   constructor() {
     super();
 
-    this._formManager = new FileUploadFormManager();
+    this.formManager = new FileUploadFormManager();
     this.leaving = false;
   }
 
   handleFileSelected(e) {
-    this._formManager.file = e.detail.file;
+    this.formManager.file = e.detail.file;
     this.requestUpdate();
   }
 
   handleNameChanged(e) {
-    this._formManager.name = e.detail.value;
+    this.formManager.name = e.detail.value;
     this.requestUpdate();
   }
 
   handleFileLoaded() {
-    this._formManager.fileLoaded = true;
+    this.formManager.fileLoaded = true;
     this.requestUpdate();
   }
 
   handleSubmit() {
-    const submitPromise = this._formManager.submit().finally(() => {
+    const submitPromise = this.formManager.submit().finally(() => {
       this.requestUpdate(); // после загузки файла
     });
 
@@ -59,15 +59,15 @@ class FormFileUpload extends LitElement {
   }
 
   get hint() {
-    if (!this._formManager.isNameValid) {
+    if (!this.formManager.isNameValid) {
       return "Перед загрузкой дайте имя файлу";
     }
 
-    if (this._formManager.isSubmitting) {
+    if (this.formManager.isSubmitting) {
       return "Файл загружается на сервер";
     }
 
-    if (!this._formManager.isSubmitDisabled) {
+    if (!this.formManager.isSubmitDisabled) {
       return "Загрузите ваш файл";
     }
 
@@ -84,11 +84,11 @@ class FormFileUpload extends LitElement {
         </upload-header>
 
         ${when(
-          !this._formManager.isFileFilled,
+          !this.formManager.isFileFilled,
           () => html`
             <text-field
               @value-changed=${this.handleNameChanged}
-              .value=${this._formManager.name}
+              .value=${this.formManager.name}
             ></text-field>
           `
         )}
@@ -96,14 +96,14 @@ class FormFileUpload extends LitElement {
         <file-field
           @file-selected=${this.handleFileSelected}
           @file-loaded=${this.handleFileLoaded}
-          ?disabled=${this._formManager.isFileFieldDisabled}
-          ?loading=${this._formManager.isSubmitting}
+          ?disabled=${this.formManager.isFileFieldDisabled}
+          ?loading=${this.formManager.isSubmitting}
           ?decreasing=${this.leaving}
         ></file-field>
 
         <submit-button
           @click=${this.handleSubmit}
-          ?disabled=${this._formManager.isSubmitDisabled}
+          ?disabled=${this.formManager.isSubmitDisabled}
         ></submit-button>
       </form>
     `;
