@@ -19,12 +19,12 @@ export class FileUploadFormManager {
   set file(newFile) {
     this._file = newFile;
     this._fileLoaded = false;
-    this.#validateFile();
+    this._validateFile();
   }
 
   set name(newName) {
     this._name = newName;
-    this.#validateName();
+    this._validateName();
   }
 
   get name() {
@@ -61,11 +61,11 @@ export class FileUploadFormManager {
     return this._submitting;
   }
 
-  #validateName() {
+  _validateName() {
     this._isNameValid = this._name !== "";
   }
 
-  #validateFile() {
+  _validateFile() {
     if (!this._file) {
       this._fileLoaded = false;
       this._isFileValid = false;
