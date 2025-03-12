@@ -211,10 +211,10 @@ class DocsImage extends LitElement {
           transform="rotate(-20.0462 46.4023 86.4417)"
           fill="#454559"
         />
-        <foreignObject x="4.00824" y="40.5331" width="175.927" height="87.7697"
+        <foreignObject x="6.53854" y="43.3" width="170.88" height="82.72"
           ><div
             xmlns="http://www.w3.org/1999/xhtml"
-            style="backdrop-filter:blur(1.26px);clip-path:url(#bgblur_0_299_233_clip_path);height:100%;width:100%"
+            style="backdrop-filter:blur(1.26px);height:100%;width:100%;border-radius:18.5px"
           ></div
         ></foreignObject>
         <g filter="url(#filter0_i_299_233)" data-figma-bg-blur-radius="2.52399">
@@ -260,14 +260,6 @@ class DocsImage extends LitElement {
               result="effect1_innerShadow_299_233"
             />
           </filter>
-          <clipPath
-            id="bgblur_0_299_233_clip_path"
-            transform="translate(-4.00824 -40.5331)"
-          >
-            <path
-              d="M6.53854 59.2703C6.29144 50.3789 13.4404 43.0415 22.3352 43.0572L160.386 43.3008C168.931 43.3159 175.911 50.1331 176.128 58.6762L177.406 109.142C177.63 117.987 170.537 125.286 161.689 125.316L23.7824 125.779C15.2203 125.807 8.19856 119.001 7.9607 110.442L6.53854 59.2703Z"
-            />
-          </clipPath>
         </defs>
       </svg>
     `;
