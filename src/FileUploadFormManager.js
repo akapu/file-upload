@@ -69,6 +69,18 @@ export class FileUploadFormManager {
     return this._submitted;
   }
 
+  get error() {
+    return this._error
+  }
+
+  get errorText() {
+    return this._errorText
+  }
+
+  get data() {
+    return this._data
+  }
+
   _validateName() {
     this._isNameValid = this._name !== "";
   }
