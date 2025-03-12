@@ -6,7 +6,11 @@ export class FileUploadFormManager {
   _isFileValid = false;
   _fileValidationErrorMessage = "";
   _submitting = false;
-  _proxy = ""
+  _proxy = "";
+  _submitted = false;
+  _error = false;
+  _errorText = "";
+  _data = null;
 
   set proxy(newProxy) {
     this._proxy = newProxy;
@@ -61,6 +65,10 @@ export class FileUploadFormManager {
     return this._submitting;
   }
 
+  get isSubmitted() {
+    return this._submitted;
+  }
+
   _validateName() {
     this._isNameValid = this._name !== "";
   }
@@ -91,7 +99,16 @@ export class FileUploadFormManager {
     this._fileValidationErrorMessage = "";
   }
 
+  _clearResult() {
+    this._submitted = false;
+    this._error = false;
+    this._errorText = "";
+    this._data = null;
+  }
+
   submit() {
+    this._clearResult();
+
     this._submitting = true;
 
     const url = "https://file-upload-server-mc26.onrender.com/api/v1/upload";
@@ -104,9 +121,23 @@ export class FileUploadFormManager {
       method: "POST",
       body: formData,
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err))
+      .then((res) => {
+        if (!res.ok) {
+          this._error = true;
+          this._errorText = `${res.status} ${res.statusText}`;
+        }
+
+        this._submitted = true;
+
+        return res.json();
+      })
+      .then((data) => {
+        this._data = data;
+      })
+      .catch((err) => {
+        this._error = true;
+        this._errorText = err.toString();
+      })
       .finally(() => {
         this._submitting = false;
       });
