@@ -12,31 +12,6 @@ class FormFileUpload extends LitElement {
       flex-direction: column;
       gap: 10px;
     }
-
-    header {
-      color: white;
-
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      align-items: center;
-    }
-
-    .title {
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 24px;
-      padding: 0;
-      margin: 0;
-    }
-
-    .hint {
-      font-weight: 200;
-      font-size: 14px;
-      line-height: 17px;
-      padding: 0;
-      margin: 0;
-    }
   `;
 
   static properties = {
@@ -102,11 +77,11 @@ class FormFileUpload extends LitElement {
   render() {
     return html`
       <form>
-        <header class="font">
-          <h2 class="title">Загрузочное окно</h2>
+        <upload-header>
+          <span slot="title">Загрузочное окно</span>
 
-          <p class="hint">${this.hint}</p>
-        </header>
+          <span slot="hint">${this.hint}</span>
+        </upload-header>
 
         ${when(
           !this._formManager.isFileFilled,
