@@ -25,7 +25,7 @@ class FileUpload extends LitElement {
       overflow: hidden;
     }
 
-    form-file-upload {
+    .content {
       flex-grow: 1 1 auto;
       min-width: 0;
     }
@@ -157,28 +157,29 @@ class FileUpload extends LitElement {
         ></file-upload-background>
 
         <close-button @click=${this.handleCloseButtonClick}></close-button>
-
-        ${when(
-          this._showForm,
-          () => {
-            return html`
-              <form-file-upload
-                .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
-                .formManager=${this._fileUploadFormManager}
-                @submit=${this.handleSubmit}
-              ></form-file-upload>
-            `;
-          },
-          () => {
-            return html`
-              <upload-result
-                .error=${this._fileUploadFormManager.error}
-                .errorText=${this._fileUploadFormManager.errorText}
-                .data=${this._fileUploadFormManager.data}
-              ></upload-result>
-            `;
-          }
-        )}
+        <div class="content">
+          ${when(
+            this._showForm,
+            () => {
+              return html`
+                <form-file-upload
+                  .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
+                  .formManager=${this._fileUploadFormManager}
+                  @submit=${this.handleSubmit}
+                ></form-file-upload>
+              `;
+            },
+            () => {
+              return html`
+                <upload-result
+                  .error=${this._fileUploadFormManager.error}
+                  .errorText=${this._fileUploadFormManager.errorText}
+                  .data=${this._fileUploadFormManager.data}
+                ></upload-result>
+              `;
+            }
+          )}
+        </div>
       </div>
     `;
   }
