@@ -36,48 +36,33 @@ export const theme = {
 
   animationDurations: {
     formToResult: [0, 220, 200, 90, 200],
+    formToResult1: [0, 2200, 2000, 900, 2000],
   },
 };
 
 export const windowBackgrounds = {
   form: {
-    background: `linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #dddcfc 42.5%,
-        #ffffff 100%
-      );`,
+    "--file-upload-background-top": theme.colors.primary,
+    "--file-upload-background-middle": "#dddcfc",
   },
 
   resultSuccess: {
-    background: `linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #8f8df4 100%
-      );`,
+    "--file-upload-background-top": theme.colors.primary,
+    "--file-upload-background-middle": "#8f8df4",
   },
 
   intermediateSuccess: {
-    background: `linear-gradient(
-        180deg,
-        ${theme.colors.primary} 0%,
-        #DDDCFC 100%
-      );`,
+    "--file-upload-background-top": theme.colors.primary,
+    "--file-upload-background-middle": "#dddcfc",
   },
 
   intermediateError: {
-    background: `linear-gradient(
-        180deg,
-        #f05c5c 0%,
-        #DDDCFC 100%
-      );`,
+    "--file-upload-background-top": "#f05c5c",
+    "--file-upload-background-middle": "#dddcfc",
   },
 
   resultError: {
-    background: `linear-gradient(
-        180deg,
-        #f05c5c 0%,
-        #8f8df4 100%
-      );`,
+    "--file-upload-background-top": "#f05c5c",
+    "--file-upload-background-middle": "#8f8df4",
   },
 };
