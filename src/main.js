@@ -13,3 +13,4 @@ import "./components/form-file-upload";
 import "./components/close-button";
 import "./components/file-upload-background"
 import "./components/upload-result"
+import "./components/upload-header"
