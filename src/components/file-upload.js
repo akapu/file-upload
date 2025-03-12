@@ -140,7 +140,7 @@ class FileUpload extends LitElement {
     this.dispatchEvent(closeEvent);
   }
 
-  get showForm() {
+  get _showForm() {
     const stagesToShowForm = [
       FileUpload.Stages.UPLOAD,
       FileUpload.Stages.FORM_LEAVING,
@@ -158,15 +158,27 @@ class FileUpload extends LitElement {
 
         <close-button @click=${this.handleCloseButtonClick}></close-button>
 
-        ${when(this.showForm, () => {
-          return html`
-            <form-file-upload
-              .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
-              .fileUploadFormManager=${this._fileUploadFormManager}
-              @submit=${this.handleSubmit}
-            ></form-file-upload>
-          `;
-        })}
+        ${when(
+          this._showForm,
+          () => {
+            return html`
+              <form-file-upload
+                .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
+                .formManager=${this._fileUploadFormManager}
+                @submit=${this.handleSubmit}
+              ></form-file-upload>
+            `;
+          },
+          () => {
+            return html`
+              <upload-result
+                .error=${this._fileUploadFormManager.error}
+                .errorText=${this._fileUploadFormManager.errorText}
+                .data=${this._fileUploadFormManager.data}
+              ></upload-result>
+            `;
+          }
+        )}
       </div>
     `;
   }
