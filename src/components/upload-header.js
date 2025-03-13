@@ -33,9 +33,9 @@ class UploadHeader extends LitElement {
       padding: 0;
       margin: 0;
 
-      // 101 чтобы скролл не появлялся при пограничных значениях
+      /* 101 чтобы не появлялся скролл при пограничных значениях */
       max-width: 101%;
-      
+
       overflow: auto;
 
       white-space: nowrap;
