@@ -9,6 +9,7 @@ export class FileUploadFormManager {
   _proxy = "";
   _submitted = false;
   _error = false;
+  _errorStatus = 0;
   _errorText = "";
   _data = null;
 
@@ -73,6 +74,10 @@ export class FileUploadFormManager {
     return this._error
   }
 
+  get errorStatus() {
+    return this._errorStatus
+  }
+
   get errorText() {
     return this._errorText
   }
@@ -114,6 +119,7 @@ export class FileUploadFormManager {
   _clearResult() {
     this._submitted = false;
     this._error = false;
+    this._errorStatus = 0;
     this._errorText = "";
     this._data = null;
   }
@@ -136,7 +142,8 @@ export class FileUploadFormManager {
       .then((res) => {
         if (!res.ok) {
           this._error = true;
-          this._errorText = `${res.status} ${res.statusText}`;
+          this._errorStatus = res.status;
+          this._errorText = `${res.statusText}`;
         }
 
         this._submitted = true;
