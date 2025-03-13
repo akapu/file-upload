@@ -67,7 +67,7 @@ class UploadResult extends LitElement {
       ([field, value]) => {
         let renderValue = value;
         if (field === "timestamp")
-          renderValue = new Date(value).toLocaleString();
+          renderValue = new Date(value).toLocaleTimeString('ru-RU');
 
         return html`${field}: ${renderValue}<br />`;
       }
