@@ -44,8 +44,6 @@ class FileUpload extends LitElement {
 
     _fileUploadFormManager: { type: Object, state: true },
     _stage: { type: String, state: true },
-
-    _backgroundState: { type: String, state: true },
   };
 
   static Stages = {
@@ -59,8 +57,6 @@ class FileUpload extends LitElement {
 
     this._fileUploadFormManager = new FileUploadFormManager();
     this._stage = FileUpload.Stages.UPLOAD;
-
-    this._backgroundState = "form";
 
     this.initializeAnimations();
   }
@@ -100,7 +96,6 @@ class FileUpload extends LitElement {
 
   async openResult() {
     this._stage = FileUpload.Stages.FORM_LEAVING;
-    this._backgroundState = "error";
 
     await this._window.value.animate(
       this._formToResultBeforeResult.keyframesWithOffsets,
@@ -129,6 +124,7 @@ class FileUpload extends LitElement {
 
   handleCloseButtonClick() {
     this.dispatchCloseEvent();
+    this.openResult();
   }
 
   dispatchCloseEvent() {
@@ -149,6 +145,16 @@ class FileUpload extends LitElement {
     return stagesToShowForm.includes(this._stage);
   }
 
+  get _backgroundState() {
+    if (this._stage === FileUpload.Stages.UPLOAD) {
+      return "form";
+    }
+
+    if (this._fileUploadFormManager.error) return "error";
+
+    return "success";
+  }
+
   render() {
     return html`
       <div ${ref(this._window)} class="window border-box">
@@ -157,6 +163,7 @@ class FileUpload extends LitElement {
         ></file-upload-background>
 
         <close-button @click=${this.handleCloseButtonClick}></close-button>
+
         <div class="content">
           ${when(
             this._showForm,
