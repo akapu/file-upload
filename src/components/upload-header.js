@@ -5,6 +5,10 @@ class UploadHeader extends LitElement {
   static styles = css`
     ${theme.utility.font}
 
+    :host {
+      width: 100%;
+    }
+
     header {
       color: white;
 
@@ -28,6 +32,13 @@ class UploadHeader extends LitElement {
       line-height: 17px;
       padding: 0;
       margin: 0;
+
+      // 101 чтобы скролл не появлялся при пограничных значениях
+      max-width: 101%;
+      
+      overflow: auto;
+
+      white-space: nowrap;
     }
   `;
 
