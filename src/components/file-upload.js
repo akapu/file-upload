@@ -57,6 +57,7 @@ class FileUpload extends LitElement {
     super();
 
     this._fileUploadFormManager = new FileUploadFormManager();
+    this._fileUploadFormManager.proxy = this.proxy;
     this._stage = FileUpload.Stages.UPLOAD;
 
     this.initializeAnimations();
@@ -181,6 +182,7 @@ class FileUpload extends LitElement {
               return html`
                 <upload-result
                   .error=${this._fileUploadFormManager.error}
+                  .errorStatus=${this._fileUploadFormManager.errorStatus}
                   .errorText=${this._fileUploadFormManager.errorText}
                   .data=${this._fileUploadFormManager.data}
                 ></upload-result>
