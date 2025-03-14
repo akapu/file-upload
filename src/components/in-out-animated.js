@@ -1,6 +1,11 @@
-import { LitElement, html } from "lit";
+import { LitElement, css, html } from "lit";
 
 export class InOutAnimated extends LitElement {
+  static styles = css`
+    :host {
+      display: none;
+    }
+  `;
   static properties = {
     animationEnabled: { type: Boolean },
     shown: { type: Boolean },
