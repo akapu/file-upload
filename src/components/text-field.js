@@ -8,7 +8,8 @@ class TextField extends LitElement {
     ${theme.styles.removeDefaultButton}
     ${theme.utility.font}
 
-    .text-field {
+    :host {
+      display: block;
       position: relative;
     }
 
@@ -90,29 +91,27 @@ class TextField extends LitElement {
   }
 
   get active() {
-    return Boolean(this.value)
+    return Boolean(this.value);
   }
 
   render() {
     return html`
-      <div class="text-field">
-        <input
-          .value=${this.value}
-          class="border-box font"
-          type="text"
-          placeholder="Название файла"
-          ?disabled=${this.disabled}
-          @input=${this.handleChange}
-        />
+      <input
+        .value=${this.value}
+        class="border-box font"
+        type="text"
+        placeholder="Название файла"
+        ?disabled=${this.disabled}
+        @input=${this.handleChange}
+      />
 
-        <button
-          ?disabled=${!this.active}
-          class=${classMap({ "clear-button": true, active: this.active })}
-          @click=${this.clearValue}
-        >
-          <cross-icon></cross-icon>
-        </button>
-      </div>
+      <button
+        ?disabled=${!this.active}
+        class=${classMap({ "clear-button": true, active: this.active })}
+        @click=${this.clearValue}
+      >
+        <cross-icon></cross-icon>
+      </button>
     `;
   }
 }
