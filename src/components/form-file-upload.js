@@ -127,6 +127,7 @@ class FormFileUpload extends LitElement {
         <submit-button
           @click=${this.handleSubmit}
           ?disabled=${this.formManager.isSubmitDisabled}
+          .decreasing=${this.leaving}
         ></submit-button>
       </form>
     `;
