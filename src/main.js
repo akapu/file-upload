@@ -14,3 +14,4 @@ import "./components/close-button";
 import "./components/file-upload-background"
 import "./components/upload-result"
 import "./components/upload-header"
+import "./components/in-out-animated"
