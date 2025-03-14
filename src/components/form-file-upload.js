@@ -6,6 +6,11 @@ class FormFileUpload extends LitElement {
   static styles = css`
     ${theme.utility.font}
 
+    :host {
+      display: block;
+      width: 277px;
+    }
+
     form {
       display: flex;
       flex-direction: column;
