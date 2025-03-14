@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { createRef, ref } from "lit/directives/ref.js";
 import { classMap } from "lit/directives/class-map.js";
+import { KeyframesComposer } from "../KeyframesComposer.js";
 
 class FileField extends LitElement {
   static styles = css`
@@ -103,6 +104,26 @@ class FileField extends LitElement {
     this._file = null;
     this.loading = false;
     this.decreasing = false;
+
+    this._initializeAnimations();
+  }
+
+  _initializeAnimations() {
+    this._fileStatusIn = new KeyframesComposer(
+      theme.animationDurations.fieldEnterLeave
+    );
+    this._fileStatusIn.setKeyframes([
+      { keyframe: { height: "0px" }, stage: 0 },
+      { keyframe: { height: "45px" }, stage: 1 },
+    ]);
+
+    this._fileStatusOut = new KeyframesComposer(
+      theme.animationDurations.fieldEnterLeave
+    );
+    this._fileStatusOut.setKeyframes([
+      { keyframe: { height: "45px" }, stage: 0 },
+      { keyframe: { height: "0px" }, stage: 1 },
+    ]);
   }
 
   fileInput = createRef();
@@ -208,7 +229,11 @@ class FileField extends LitElement {
           <p class="hint font">${this.hint}</p>
         </button>
 
-        <in-out-animated .shown=${Boolean(this._file)}>
+        <in-out-animated
+          .shown=${Boolean(this._file)}
+          .in=${this._fileStatusIn}
+          .out=${this._fileStatusOut}
+        >
           <file-status
             class="top-gap"
             ?disabled=${this.disabled}

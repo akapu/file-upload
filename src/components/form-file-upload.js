@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { FileUploadFormManager } from "../FileUploadFormManager.js";
+import { KeyframesComposer } from "../KeyframesComposer.js";
 
 class FormFileUpload extends LitElement {
   static styles = css`
@@ -39,7 +40,28 @@ class FormFileUpload extends LitElement {
     this.formManager = new FileUploadFormManager();
     this.leaving = false;
     this._nameFieldAnimationEnabled = false;
+
+    this._initializeAnimations();
   }
+
+  _initializeAnimations() {
+    this._nameFieldIn = new KeyframesComposer(
+      theme.animationDurations.fieldEnterLeave
+    );
+    this._nameFieldIn.setKeyframes([
+      { keyframe: { height: "0px" }, stage: 0 },
+      { keyframe: { height: "45px" }, stage: 1 },
+    ]);
+
+    this._nameFieldOut = new KeyframesComposer(
+      theme.animationDurations.fieldEnterLeave
+    );
+    this._nameFieldOut.setKeyframes([
+      { keyframe: { height: "45px" }, stage: 0 },
+      { keyframe: { height: "0px" }, stage: 1 },
+    ]);
+  }
+
 
   firstUpdated() {
     this._nameFieldAnimationEnabled = true;
@@ -107,6 +129,8 @@ class FormFileUpload extends LitElement {
           <in-out-animated
             .shown=${!this.formManager.isFileFilled}
             .animationEnabled=${this._nameFieldAnimationEnabled}
+            .in=${this._nameFieldIn}
+            .out=${this._nameFieldOut}
           >
             <text-field
               class="gap"

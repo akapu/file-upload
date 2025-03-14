@@ -1,4 +1,5 @@
 import { LitElement, css, html } from "lit";
+import { KeyframesComposer } from "../KeyframesComposer";
 
 export class InOutAnimated extends LitElement {
   static styles = css`
@@ -9,6 +10,8 @@ export class InOutAnimated extends LitElement {
   static properties = {
     animationEnabled: { type: Boolean },
     shown: { type: Boolean },
+    in: { type: KeyframesComposer },
+    out: { type: KeyframesComposer },
   };
 
   constructor() {
@@ -26,10 +29,7 @@ export class InOutAnimated extends LitElement {
   async _hide() {
     this.style.overflow = "hidden";
 
-    await this._playAnimation([
-      { height: "45px", offset: 0.0 },
-      { height: "0px", offset: 1.0 },
-    ]);
+    await this._playAnimation(this.out);
 
     this.style.overflow = "visible";
     this.style.display = "none";
@@ -39,18 +39,18 @@ export class InOutAnimated extends LitElement {
     this.style.display = "block";
     this.style.overflow = "hidden";
 
-    await this._playAnimation([
-      { height: "0px", offset: 0.0 },
-      { height: "45px", offset: 1.0 },
-    ]);
+    await this._playAnimation(this.in);
 
     this.style.overflow = "visible";
   }
 
-  async _playAnimation(keyframes) {
+  async _playAnimation(keyframesComposer) {
     if (!this.animationEnabled) return;
 
-    return await this.animate(keyframes, { duration: 140 }).finished;
+    return await this.animate(keyframesComposer.keyframesWithOffsets, {
+      duration: keyframesComposer.totalDuration,
+      fill: "forwards",
+    }).finished;
   }
 
   _handleShownToggle() {
