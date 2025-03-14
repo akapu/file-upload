@@ -22,7 +22,7 @@ export class InOutAnimated extends LitElement {
     this.style.overflow = "hidden";
 
     await this._playAnimation([
-      { height: "35px", offset: 0.0 },
+      { height: "45px", offset: 0.0 },
       { height: "0px", offset: 1.0 },
     ]);
 
@@ -36,7 +36,7 @@ export class InOutAnimated extends LitElement {
 
     await this._playAnimation([
       { height: "0px", offset: 0.0 },
-      { height: "35px", offset: 1.0 },
+      { height: "45px", offset: 1.0 },
     ]);
 
     this.style.overflow = "visible";
@@ -45,7 +45,7 @@ export class InOutAnimated extends LitElement {
   async _playAnimation(keyframes) {
     if (!this.animationEnabled) return;
 
-    return await this.animate(keyframes, { duration: 500 }).finished;
+    return await this.animate(keyframes, { duration: 140 }).finished;
   }
 
   _handleShownToggle() {
