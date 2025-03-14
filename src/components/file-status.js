@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { createRef, ref } from "lit/directives/ref.js";
+import { KeyframesComposer } from "../KeyframesComposer.js";
 
 class FileStatus extends LitElement {
   static styles = css`
@@ -68,6 +69,7 @@ class FileStatus extends LitElement {
     delay: { type: Number },
     duration: { type: Number },
     disabled: { type: Boolean },
+    decreasing: { type: Boolean },
   };
 
   constructor() {
@@ -77,6 +79,7 @@ class FileStatus extends LitElement {
     this.duration = 1000;
     this.name = "";
     this.disabled = false;
+    this.deacreasing = false;
   }
 
   animatedProgress = createRef();
@@ -97,6 +100,39 @@ class FileStatus extends LitElement {
   dispatchAnimationCompleted() {
     const animationCompleted = new CustomEvent("animation-completed", {});
     this.dispatchEvent(animationCompleted);
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("decreasing") && this.decreasing) {
+      this._startDecreasing();
+    }
+  }
+
+  _startDecreasing() {
+    const keyframesComposer = new KeyframesComposer(
+      theme.animationDurations.formToResult
+    );
+    keyframesComposer.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      {
+        keyframe: {
+          opacity: "0.5",
+        },
+        stage: 1,
+      },
+      {
+        keyframe: {
+          transform: "scale(0)",
+          opacity: "0",
+        },
+        stage: 1,
+      },
+    ]);
+
+    this.animate(keyframesComposer.keyframesWithOffsets, {
+      duration: keyframesComposer.totalDuration,
+      fill: "forwards",
+    });
   }
 
   render() {

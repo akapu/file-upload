@@ -218,6 +218,7 @@ class FileField extends LitElement {
             .name=${this._file?.name}
             duration="1200"
             delay="140"
+            ?decreasing=${this.decreasing}
           ></file-status>
         </in-out-animated>
       </div>
