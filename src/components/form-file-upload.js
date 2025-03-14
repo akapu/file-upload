@@ -96,7 +96,7 @@ class FormFileUpload extends LitElement {
   render() {
     return html`
       <form>
-        <upload-header>
+        <upload-header ?leaving=${this.leaving}>
           <span slot="title">Загрузочное окно</span>
 
           <span slot="hint">${this.hint}</span>

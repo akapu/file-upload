@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme";
+import { KeyframesComposer } from "../KeyframesComposer";
 
 class UploadHeader extends LitElement {
   static styles = css`
@@ -41,6 +42,48 @@ class UploadHeader extends LitElement {
       white-space: nowrap;
     }
   `;
+
+  static properties = {
+    leaving: { type: Boolean },
+  };
+
+  constructor() {
+    super();
+    this.leaving = false;
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("leaving") && this.leaving) {
+      this._startLeaving();
+    }
+  }
+
+  _startLeaving() {
+    const keyframesComposer = new KeyframesComposer(
+      theme.animationDurations.formToResult
+    );
+    keyframesComposer.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      {
+        keyframe: {
+          opacity: "0.5",
+        },
+        stage: 1,
+      },
+      {
+        keyframe: {
+          transform: "scale(0)",
+          opacity: "0",
+        },
+        stage: 2,
+      },
+    ]);
+
+    this.animate(keyframesComposer.keyframesWithOffsets, {
+      duration: keyframesComposer.totalDuration,
+      fill: "forwards",
+    });
+  }
 
   render() {
     return html`
