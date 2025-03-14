@@ -7,6 +7,10 @@ class FileStatus extends LitElement {
     ${theme.utility.borderBox}
     ${theme.styles.removeDefaultButton}
 
+    :host {
+      display: block;
+    }
+
     .outline {
       width: 100%;
       height: 35px;
