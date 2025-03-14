@@ -63,19 +63,19 @@ class FileUpload extends LitElement {
   }
 
   initializeAnimations() {
-    this._formToResultBeforeResult = new KeyframesComposer(
+    this._windowBeforeResult = new KeyframesComposer(
       theme.animationDurations.formToResult
     );
-    this._formToResultBeforeResult.setKeyframes([
+    this._windowBeforeResult.setKeyframes([
       { keyframe: {}, stage: 0 },
       { keyframe: {}, stage: 1 },
       { keyframe: { height: "310px" }, stage: 2 },
     ]);
 
-    this._formToResultAfterResult = new KeyframesComposer(
+    this._windowAfterResult = new KeyframesComposer(
       theme.animationDurations.formToResult
     );
-    this._formToResultAfterResult.setKeyframes([
+    this._windowAfterResult.setKeyframes([
       {
         keyframe: {
           height: "230px",
@@ -83,9 +83,47 @@ class FileUpload extends LitElement {
         stage: 3,
       },
     ]);
+
+    this._closeButtonLeaving = new KeyframesComposer(
+      theme.animationDurations.formToResult
+    );
+    this._closeButtonLeaving.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      {
+        keyframe: {
+          transform: "translateY(100px)",
+          opacity: "0",
+        },
+        stage: 1,
+      },
+    ]);
   }
 
   _window = createRef();
+  _closeButton = createRef();
+
+  updated(changedProperties) {
+    if (changedProperties.has("_stage")) {
+      this._handleStageChange();
+    }
+  }
+
+  _handleStageChange() {
+    const leavingStages = [FileUpload.Stages.FORM_LEAVING];
+    if (leavingStages.includes(this._stage)) {
+      this._startCloseButtonAnimation()
+    }
+  }
+
+  _startCloseButtonAnimation() {
+    this._closeButton.value.animate(
+      this._closeButtonLeaving.keyframesWithOffsets,
+      {
+        duration: this._closeButtonLeaving.totalDuration,
+        fill: "forwards",
+      }
+    );
+  }
 
   set proxy(newProxy) {
     this._fileUploadFormManager.proxy = newProxy;
@@ -99,9 +137,9 @@ class FileUpload extends LitElement {
     this._stage = FileUpload.Stages.FORM_LEAVING;
 
     await this._window.value.animate(
-      this._formToResultBeforeResult.keyframesWithOffsets,
+      this._windowBeforeResult.keyframesWithOffsets,
       {
-        duration: this._formToResultBeforeResult.totalDuration,
+        duration: this._windowBeforeResult.totalDuration,
         fill: "forwards",
       }
     ).finished;
@@ -109,9 +147,9 @@ class FileUpload extends LitElement {
     this._stage = FileUpload.Stages.RESULT_ENTERING;
 
     await this._window.value.animate(
-      this._formToResultAfterResult.keyframesWithOffsets,
+      this._windowAfterResult.keyframesWithOffsets,
       {
-        duration: this._formToResultAfterResult.totalDuration,
+        duration: this._windowAfterResult.totalDuration,
         fill: "forwards",
       }
     ).finished;
@@ -163,7 +201,10 @@ class FileUpload extends LitElement {
           .state=${this._backgroundState}
         ></file-upload-background>
 
-        <close-button @click=${this.handleCloseButtonClick}></close-button>
+        <close-button
+          @click=${this.handleCloseButtonClick}
+          ${ref(this._closeButton)}
+        ></close-button>
 
         <div class="content">
           ${when(
