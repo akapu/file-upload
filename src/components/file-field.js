@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
 import { createRef, ref } from "lit/directives/ref.js";
-import { when } from "lit/directives/when.js";
 import { classMap } from "lit/directives/class-map.js";
 
 class FileField extends LitElement {
@@ -15,6 +14,18 @@ class FileField extends LitElement {
       flex-direction: column;
       align-items: center;
       gap: 10px;
+    }
+
+    .gapless {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      width: 100%;
+    }
+
+    .top-gap {
+      margin-top: 10px;
     }
 
     .dropzone {
@@ -69,7 +80,7 @@ class FileField extends LitElement {
       text-align: center;
     }
 
-    file-status {
+    in-out-animated {
       align-self: stretch;
     }
 
@@ -98,7 +109,7 @@ class FileField extends LitElement {
   fileStatus = createRef();
 
   handleFileSelect(e) {
-    if (this._file) this.fileStatus.value.startAnimation();
+    this.fileStatus.value.startAnimation();
 
     this._file = e.target.files[0];
     this.fileInput.value.value = null;
@@ -181,34 +192,35 @@ class FileField extends LitElement {
 
   render() {
     return html`
-      <button
-        class=${classMap(this.dropzoneClasses)}
-        @click=${this.passClickToInput}
-        @drop=${this.drop}
-        @dragover=${this.dragover}
-        ?disabled=${this.disabled}
-      >
-        <docs-image
-          ?rainbow=${this.loading}
-          ?decreasing=${this.decreasing}
-        ></docs-image>
+      <div class="gapless">
+        <button
+          class=${classMap(this.dropzoneClasses)}
+          @click=${this.passClickToInput}
+          @drop=${this.drop}
+          @dragover=${this.dragover}
+          ?disabled=${this.disabled}
+        >
+          <docs-image
+            ?rainbow=${this.loading}
+            ?decreasing=${this.decreasing}
+          ></docs-image>
 
-        <p class="hint font">${this.hint}</p>
-      </button>
+          <p class="hint font">${this.hint}</p>
+        </button>
 
-      ${when(
-        this._file,
-        () =>
-          html`<file-status
+        <in-out-animated .shown=${Boolean(this._file)}>
+          <file-status
+            class="top-gap"
             ?disabled=${this.disabled}
             @file-remove-requested=${this.handleFileRemoveRequested}
             @animation-completed=${this.handleAnimationCompleted}
             ${ref(this.fileStatus)}
-            .name=${this._file.name}
+            .name=${this._file?.name}
             duration="1200"
             delay="140"
-          ></file-status>`
-      )}
+          ></file-status>
+        </in-out-animated>
+      </div>
 
       <input
         ?disabled=${this.disabled}
