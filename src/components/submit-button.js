@@ -1,11 +1,19 @@
 import { LitElement, html, css } from "lit";
 import { theme } from "../theme.js";
+import { createRef, ref } from "lit/directives/ref.js";
+import { KeyframesComposer } from "../KeyframesComposer.js";
 
 class SubmitButton extends LitElement {
   static styles = css`
     ${theme.utility.borderBox}
     ${theme.styles.removeDefaultButton}
     ${theme.utility.font}
+    
+    :host {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
 
     button {
       cursor: pointer;
@@ -28,6 +36,8 @@ class SubmitButton extends LitElement {
 
       transition: background-color 0.6s linear;
       transition: width, height 0.22s linear;
+
+      overflow: hidden;
     }
 
     button:disabled {
@@ -42,6 +52,35 @@ class SubmitButton extends LitElement {
     decreasing: { type: Boolean },
   };
 
+  _button = createRef();
+
+  updated(changedProperties) {
+    if (changedProperties.has("decreasing") && this.decreasing) {
+      this._startDecreasing();
+    }
+  }
+
+  _startDecreasing() {
+    const keyframesComposer = new KeyframesComposer(
+      theme.animationDurations.formToResult
+    );
+    keyframesComposer.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      {
+        keyframe: {
+          transform: "scale(0)",
+          opacity: "0",
+        },
+        stage: 1,
+      },
+    ]);
+
+    this._button.value.animate(keyframesComposer.keyframesWithOffsets, {
+      duration: keyframesComposer.totalDuration,
+      fill: "forwards",
+    });
+  }
+
   constructor() {
     super();
 
@@ -51,7 +90,11 @@ class SubmitButton extends LitElement {
 
   render() {
     return html`
-      <button class="border-box font" ?disabled=${this.disabled}>
+      <button
+        class="border-box font"
+        ?disabled=${this.disabled}
+        ${ref(this._button)}
+      >
         Загрузить
       </button>
     `;
