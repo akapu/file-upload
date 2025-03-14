@@ -97,6 +97,35 @@ class FileUpload extends LitElement {
         stage: 1,
       },
     ]);
+
+    const resultInDurations = [
+      0,
+      ...theme.animationDurations.formToResult.slice(3),
+    ];
+    this._resultIn = new KeyframesComposer(resultInDurations);
+    this._resultIn.setKeyframes([
+      {
+        keyframe: {
+          opacity: 0,
+          transform: "scale(0)",
+        },
+        stage: 0,
+      },
+      {
+        keyframe: {
+          opacity: "0.3",
+          transform: "scale(0.3)",
+        },
+        stage: 1,
+      },
+      {
+        keyframe: {
+          opacity: "1",
+          transform: "scale(1)",
+        },
+        stage: 2,
+      },
+    ]);
   }
 
   _window = createRef();
@@ -111,7 +140,7 @@ class FileUpload extends LitElement {
   _handleStageChange() {
     const leavingStages = [FileUpload.Stages.FORM_LEAVING];
     if (leavingStages.includes(this._stage)) {
-      this._startCloseButtonAnimation()
+      this._startCloseButtonAnimation();
     }
   }
 
@@ -184,6 +213,12 @@ class FileUpload extends LitElement {
     return stagesToShowForm.includes(this._stage);
   }
 
+  get _showResult() {
+    const stagesToShowResult = [FileUpload.Stages.RESULT_ENTERING];
+
+    return stagesToShowResult.includes(this._stage);
+  }
+
   get _backgroundState() {
     if (this._stage === FileUpload.Stages.UPLOAD) {
       return "form";
@@ -207,28 +242,24 @@ class FileUpload extends LitElement {
         ></close-button>
 
         <div class="content">
-          ${when(
-            this._showForm,
-            () => {
-              return html`
-                <form-file-upload
-                  .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
-                  .formManager=${this._fileUploadFormManager}
-                  @submit=${this.handleSubmit}
-                ></form-file-upload>
-              `;
-            },
-            () => {
-              return html`
-                <upload-result
-                  .error=${this._fileUploadFormManager.error}
-                  .errorStatus=${this._fileUploadFormManager.errorStatus}
-                  .errorText=${this._fileUploadFormManager.errorText}
-                  .data=${this._fileUploadFormManager.data}
-                ></upload-result>
-              `;
-            }
-          )}
+          ${when(this._showForm, () => {
+            return html`
+              <form-file-upload
+                .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
+                .formManager=${this._fileUploadFormManager}
+                @submit=${this.handleSubmit}
+              ></form-file-upload>
+            `;
+          })}
+
+          <in-out-animated .shown=${this._showResult} .in=${this._resultIn}>
+            <upload-result
+              .error=${this._fileUploadFormManager.error}
+              .errorStatus=${this._fileUploadFormManager.errorStatus}
+              .errorText=${this._fileUploadFormManager.errorText}
+              .data=${this._fileUploadFormManager.data}
+            ></upload-result>
+          </in-out-animated>
         </div>
       </div>
     `;
