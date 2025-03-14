@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit";
-import { when } from "lit/directives/when.js";
 import { theme } from "../theme.js";
 import { FileUploadFormManager } from "../FileUploadFormManager.js";
 
@@ -12,11 +11,21 @@ class FormFileUpload extends LitElement {
       flex-direction: column;
       gap: 10px;
     }
+
+    .fields {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gap {
+      margin-bottom: 10px;
+    }
   `;
 
   static properties = {
     formManager: { type: Object },
     leaving: { type: Boolean },
+    _nameFieldAnimationEnabled: { type: Boolean, state: true },
   };
 
   constructor() {
@@ -24,6 +33,11 @@ class FormFileUpload extends LitElement {
 
     this.formManager = new FileUploadFormManager();
     this.leaving = false;
+    this._nameFieldAnimationEnabled = false;
+  }
+
+  firstUpdated() {
+    this._nameFieldAnimationEnabled = true;
   }
 
   handleFileSelected(e) {
@@ -83,23 +97,27 @@ class FormFileUpload extends LitElement {
           <span slot="hint">${this.hint}</span>
         </upload-header>
 
-        ${when(
-          !this.formManager.isFileFilled,
-          () => html`
+        <!-- объедиены для присоединения промежутка к анимации текстового поля -->
+        <div class="fields">
+          <in-out-animated
+            .shown=${!this.formManager.isFileFilled}
+            .animationEnabled=${this._nameFieldAnimationEnabled}
+          >
             <text-field
+              class="gap"
               @value-changed=${this.handleNameChanged}
               .value=${this.formManager.name}
             ></text-field>
-          `
-        )}
+          </in-out-animated>
 
-        <file-field
-          @file-selected=${this.handleFileSelected}
-          @file-loaded=${this.handleFileLoaded}
-          ?disabled=${this.formManager.isFileFieldDisabled}
-          ?loading=${this.formManager.isSubmitting}
-          ?decreasing=${this.leaving}
-        ></file-field>
+          <file-field
+            @file-selected=${this.handleFileSelected}
+            @file-loaded=${this.handleFileLoaded}
+            ?disabled=${this.formManager.isFileFieldDisabled}
+            ?loading=${this.formManager.isSubmitting}
+            ?decreasing=${this.leaving}
+          ></file-field>
+        </div>
 
         <submit-button
           @click=${this.handleSubmit}
