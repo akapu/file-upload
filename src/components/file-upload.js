@@ -51,6 +51,7 @@ class FileUpload extends LitElement {
     UPLOAD: "upload",
     FORM_LEAVING: "form leaving",
     RESULT_ENTERING: "result entering",
+    RESULT_LEAVING: "result leaving",
   };
 
   constructor() {
@@ -192,11 +193,7 @@ class FileUpload extends LitElement {
     this._fileUploadFormManager.proxy = newProxy;
   }
 
-  get proxy() {
-    return this._fileUploadFormManager.proxy;
-  }
-
-  async openResult() {
+  async _openResult() {
     this._stage = FileUpload.Stages.FORM_LEAVING;
 
     await this._window.value.animate(
@@ -218,18 +215,23 @@ class FileUpload extends LitElement {
     ).finished;
   }
 
-  handleSubmit(event) {
+  _handleSubmit(event) {
     this.requestUpdate(); // перед загрузкой файла
 
-    event.detail.submitPromise.then(() => this.openResult()); // после загрузки файла
+    event.detail.submitPromise.then(() => this._openResult()); // после загрузки файла
   }
 
-  handleCloseButtonClick() {
-    this.dispatchCloseEvent();
-    this.openResult();
+  _handleCloseButtonClick() {
+    if (this._stage === FileUpload.Stages.UPLOAD) {
+      this._dispatchCloseEvent();
+    }
+
+    if (this._stage === FileUpload.Stages.RESULT_ENTERING) {
+      this._stage = FileUpload.Stages.RESULT_LEAVING;
+    }
   }
 
-  dispatchCloseEvent() {
+  _dispatchCloseEvent() {
     const closeEvent = new CustomEvent("close", {
       bubbles: true,
       composed: true,
@@ -286,7 +288,7 @@ class FileUpload extends LitElement {
           .animationEnabled=${this._closeButtonAnimationEnabled}
           class="close-button"
         >
-          <close-button @click=${this.handleCloseButtonClick}></close-button>
+          <close-button @click=${this._handleCloseButtonClick}></close-button>
         </in-out-animated>
 
         <div class="content">
@@ -295,7 +297,7 @@ class FileUpload extends LitElement {
               <form-file-upload
                 .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
                 .formManager=${this._fileUploadFormManager}
-                @submit=${this.handleSubmit}
+                @submit=${this._handleSubmit}
               ></form-file-upload>
             `;
           })}
