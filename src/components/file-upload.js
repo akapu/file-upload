@@ -3,7 +3,6 @@ import { theme } from "../theme.js";
 import { FileUploadFormManager } from "../FileUploadFormManager.js";
 import { KeyframesComposer } from "../KeyframesComposer.js";
 import { ref, createRef } from "lit/directives/ref.js";
-import { when } from "lit/directives/when.js";
 
 class FileUpload extends LitElement {
   static styles = css`
@@ -44,7 +43,7 @@ class FileUpload extends LitElement {
 
     _fileUploadFormManager: { type: Object, state: true },
     _stage: { type: String, state: true },
-    _closeButtonAnimationEnabled: { type: Boolean, state: true },
+    _animationEnabled: { type: Boolean, state: true },
   };
 
   static Stages = {
@@ -60,7 +59,7 @@ class FileUpload extends LitElement {
     this._fileUploadFormManager = new FileUploadFormManager();
     this._fileUploadFormManager.proxy = this.proxy;
     this._stage = FileUpload.Stages.UPLOAD;
-    this._closeButtonAnimationEnabled = false;
+    this._animationEnabled = false;
 
     this._initializeAnimations();
   }
@@ -195,10 +194,39 @@ class FileUpload extends LitElement {
         stage: 2,
       },
     ]);
+
+    this._formOut = new KeyframesComposer([]);
+
+    const formInDurations = [
+      0,
+      ...theme.animationDurations.resultToForm.slice(3),
+    ];
+
+    this._formIn = new KeyframesComposer(formInDurations);
+    this._formIn.setKeyframes([
+      {
+        keyframe: {opacity: 0, transform: "scale(0)"},
+        stage: 0,
+      },
+      {
+        keyframe: {
+          opacity: "0.5",
+          transform: "scale(0.5)",
+        },
+        stage: 1,
+      },
+      {
+        keyframe: {
+          opacity: 1,
+          transform: "scale(1)",
+        },
+        stage: 2,
+      },
+    ]);
   }
 
   firstUpdated() {
-    this._closeButtonAnimationEnabled = true;
+    this._animationEnabled = true;
   }
 
   _window = createRef();
@@ -317,22 +345,25 @@ class FileUpload extends LitElement {
           .shown=${this._showCloseButton}
           .out=${this._closeButtonLeaving}
           .in=${this._closeButtonIn}
-          .animationEnabled=${this._closeButtonAnimationEnabled}
+          .animationEnabled=${this._animationEnabled}
           class="close-button"
         >
           <close-button @click=${this._handleCloseButtonClick}></close-button>
         </in-out-animated>
 
         <div class="content">
-          ${when(this._showForm, () => {
-            return html`
-              <form-file-upload
-                .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
-                .formManager=${this._fileUploadFormManager}
-                @submit=${this._handleSubmit}
-              ></form-file-upload>
-            `;
-          })}
+          <in-out-animated
+            .shown=${this._showForm}
+            .in=${this._formIn}
+            .out=${this._formOut}
+            .animationEnabled=${this._animationEnabled}
+          >
+            <form-file-upload
+              .leaving=${this._stage === FileUpload.Stages.FORM_LEAVING}
+              .formManager=${this._fileUploadFormManager}
+              @submit=${this._handleSubmit}
+            ></form-file-upload>
+          </in-out-animated>
 
           <in-out-animated
             .shown=${this._showResult}
