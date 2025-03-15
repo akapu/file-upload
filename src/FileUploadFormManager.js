@@ -27,6 +27,10 @@ export class FileUploadFormManager {
     this._validateFile();
   }
 
+  get file() {
+    return this._file;
+  }
+
   set name(newName) {
     this._name = newName;
     this._validateName();

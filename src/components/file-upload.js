@@ -205,7 +205,7 @@ class FileUpload extends LitElement {
     this._formIn = new KeyframesComposer(formInDurations);
     this._formIn.setKeyframes([
       {
-        keyframe: {opacity: 0, transform: "scale(0)"},
+        keyframe: { opacity: 0, transform: "scale(0)" },
         stage: 0,
       },
       {
@@ -246,6 +246,9 @@ class FileUpload extends LitElement {
         fill: "forwards",
       }
     ).finished;
+
+    if (!this._fileUploadFormManager.error)
+      this._fileUploadFormManager.clearFields();
 
     this._stage = FileUpload.Stages.RESULT_ENTERING;
 

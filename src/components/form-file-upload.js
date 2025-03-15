@@ -145,6 +145,7 @@ class FormFileUpload extends LitElement {
             ?disabled=${this.formManager.isFileFieldDisabled}
             ?loading=${this.formManager.isSubmitting}
             ?decreasing=${this.leaving}
+            .file =${this.formManager.file}
           ></file-field>
         </div>
 

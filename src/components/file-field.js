@@ -94,14 +94,14 @@ class FileField extends LitElement {
     loading: { type: Boolean },
     disabled: { type: Boolean, reflect: true },
     decreasing: { type: Boolean },
-    _file: { type: Object, state: true },
+    file: { type: Object },
   };
 
   constructor() {
     super();
 
     this.disabled = false;
-    this._file = null;
+    this.file = null;
     this.loading = false;
     this.decreasing = false;
 
@@ -132,10 +132,10 @@ class FileField extends LitElement {
   handleFileSelect(e) {
     this.fileStatus.value.startAnimation();
 
-    this._file = e.target.files[0];
+    this.file = e.target.files[0];
     this.fileInput.value.value = null;
 
-    if (this._file) {
+    if (this.file) {
       this.dispatchFileSelected();
     }
   }
@@ -151,9 +151,9 @@ class FileField extends LitElement {
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      if (this._file) this.fileStatus.value.startAnimation();
+      if (this.file) this.fileStatus.value.startAnimation();
 
-      this._file = files[0];
+      this.file = files[0];
 
       this.dispatchFileSelected();
     }
@@ -169,7 +169,7 @@ class FileField extends LitElement {
 
   dispatchFileSelected() {
     const fileSelected = new CustomEvent("file-selected", {
-      detail: { file: this._file },
+      detail: { file: this.file },
       bubbles: true,
       composed: true,
     });
@@ -179,7 +179,7 @@ class FileField extends LitElement {
 
   clearField() {
     this.fileInput.value.value = null;
-    this._file = null;
+    this.file = null;
     this.dispatchFileSelected();
   }
 
@@ -230,7 +230,7 @@ class FileField extends LitElement {
         </button>
 
         <in-out-animated
-          .shown=${Boolean(this._file)}
+          .shown=${Boolean(this.file)}
           .in=${this._fileStatusIn}
           .out=${this._fileStatusOut}
         >
@@ -240,7 +240,7 @@ class FileField extends LitElement {
             @file-remove-requested=${this.handleFileRemoveRequested}
             @animation-completed=${this.handleAnimationCompleted}
             ${ref(this.fileStatus)}
-            .name=${this._file?.name}
+            .name=${this.file?.name}
             duration="1200"
             delay="140"
             ?decreasing=${this.decreasing}
