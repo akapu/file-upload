@@ -154,6 +154,31 @@ class FileUpload extends LitElement {
         stage: 2,
       },
     ]);
+
+    this._resultOut = new KeyframesComposer(resultInDurations);
+    this._resultOut.setKeyframes([
+      {
+        keyframe: {
+          opacity: 0,
+          transform: "scale(0)",
+        },
+        stage: 0,
+      },
+      {
+        keyframe: {
+          opacity: "0.3",
+          transform: "scale(0.3)",
+        },
+        stage: 1,
+      },
+      {
+        keyframe: {
+          opacity: "1",
+          transform: "scale(1)",
+        },
+        stage: 2,
+      },
+    ]);
   }
 
   firstUpdated() {
@@ -275,7 +300,11 @@ class FileUpload extends LitElement {
             `;
           })}
 
-          <in-out-animated .shown=${this._showResult} .in=${this._resultIn}>
+          <in-out-animated
+            .shown=${this._showResult}
+            .in=${this._resultIn}
+            .out=${this._resultOut}
+          >
             <upload-result
               .error=${this._fileUploadFormManager.error}
               .errorStatus=${this._fileUploadFormManager.errorStatus}
