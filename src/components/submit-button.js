@@ -73,11 +73,18 @@ class SubmitButton extends LitElement {
         },
         stage: 1,
       },
+      {
+        keyframe: {
+          transform: "scale(0)",
+          opacity: "0",
+        },
+        stage: 2,
+      },
     ]);
 
     this._button.value.animate(keyframesComposer.keyframesWithOffsets, {
       duration: keyframesComposer.totalDuration,
-      fill: "forwards",
+      fill: "backwards",
     });
   }
 

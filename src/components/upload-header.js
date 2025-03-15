@@ -81,7 +81,7 @@ class UploadHeader extends LitElement {
 
     this.animate(keyframesComposer.keyframesWithOffsets, {
       duration: keyframesComposer.totalDuration,
-      fill: "forwards",
+      fill: "backwards",
     });
   }
 

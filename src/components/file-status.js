@@ -125,13 +125,13 @@ class FileStatus extends LitElement {
           transform: "scale(0)",
           opacity: "0",
         },
-        stage: 1,
+        stage: 2,
       },
     ]);
 
     this.animate(keyframesComposer.keyframesWithOffsets, {
       duration: keyframesComposer.totalDuration,
-      fill: "forwards",
+      fill: "backwards",
     });
   }
 
