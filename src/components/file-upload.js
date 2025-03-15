@@ -286,7 +286,6 @@ class FileUpload extends LitElement {
   _handleCloseButtonClick() {
     if (this._stage === FileUpload.Stages.UPLOAD) {
       this._dispatchCloseEvent();
-      this._openResult();
     }
 
     if (this._stage === FileUpload.Stages.RESULT_ENTERING) {
