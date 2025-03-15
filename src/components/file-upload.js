@@ -31,7 +31,7 @@ class FileUpload extends LitElement {
       min-width: 0;
     }
 
-    close-button {
+    .close-button {
       position: absolute;
       top: 11px;
       right: 12px;
@@ -44,6 +44,7 @@ class FileUpload extends LitElement {
 
     _fileUploadFormManager: { type: Object, state: true },
     _stage: { type: String, state: true },
+    _closeButtonAnimationEnabled: { type: Boolean, state: true },
   };
 
   static Stages = {
@@ -58,6 +59,7 @@ class FileUpload extends LitElement {
     this._fileUploadFormManager = new FileUploadFormManager();
     this._fileUploadFormManager.proxy = this.proxy;
     this._stage = FileUpload.Stages.UPLOAD;
+    this._closeButtonAnimationEnabled = false;
 
     this.initializeAnimations();
   }
@@ -102,6 +104,32 @@ class FileUpload extends LitElement {
       0,
       ...theme.animationDurations.formToResult.slice(3),
     ];
+
+    this._closeButtonIn = new KeyframesComposer(resultInDurations);
+    this._closeButtonIn.setKeyframes([
+      {
+        keyframe: {
+          transform: "translateY(100px)",
+          opacity: "0",
+        },
+        stage: 0,
+      },
+      {
+        keyframe: {
+          transform: "translateY(70px)",
+          opacity: "0.3",
+        },
+        stage: 1,
+      },
+      {
+        keyframe: {
+          transform: "translateY(0px)",
+          opacity: "1",
+        },
+        stage: 2,
+      },
+    ]);
+
     this._resultIn = new KeyframesComposer(resultInDurations);
     this._resultIn.setKeyframes([
       {
@@ -128,31 +156,12 @@ class FileUpload extends LitElement {
     ]);
   }
 
+  firstUpdated() {
+    this._closeButtonAnimationEnabled = true;
+  }
+
   _window = createRef();
   _closeButton = createRef();
-
-  updated(changedProperties) {
-    if (changedProperties.has("_stage")) {
-      this._handleStageChange();
-    }
-  }
-
-  _handleStageChange() {
-    const leavingStages = [FileUpload.Stages.FORM_LEAVING];
-    if (leavingStages.includes(this._stage)) {
-      this._startCloseButtonAnimation();
-    }
-  }
-
-  _startCloseButtonAnimation() {
-    this._closeButton.value.animate(
-      this._closeButtonLeaving.keyframesWithOffsets,
-      {
-        duration: this._closeButtonLeaving.totalDuration,
-        fill: "forwards",
-      }
-    );
-  }
 
   set proxy(newProxy) {
     this._fileUploadFormManager.proxy = newProxy;
@@ -219,6 +228,15 @@ class FileUpload extends LitElement {
     return stagesToShowResult.includes(this._stage);
   }
 
+  get _showCloseButton() {
+    const stagesToShowCloseButton = [
+      FileUpload.Stages.RESULT_ENTERING,
+      FileUpload.Stages.UPLOAD,
+    ];
+
+    return stagesToShowCloseButton.includes(this._stage);
+  }
+
   get _backgroundState() {
     if (this._stage === FileUpload.Stages.UPLOAD) {
       return "form";
@@ -236,10 +254,15 @@ class FileUpload extends LitElement {
           .state=${this._backgroundState}
         ></file-upload-background>
 
-        <close-button
-          @click=${this.handleCloseButtonClick}
-          ${ref(this._closeButton)}
-        ></close-button>
+        <in-out-animated
+          .shown=${this._showCloseButton}
+          .out=${this._closeButtonLeaving}
+          .in=${this._closeButtonIn}
+          .animationEnabled=${this._closeButtonAnimationEnabled}
+          class="close-button"
+        >
+          <close-button @click=${this.handleCloseButtonClick}></close-button>
+        </in-out-animated>
 
         <div class="content">
           ${when(this._showForm, () => {
