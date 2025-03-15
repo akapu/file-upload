@@ -100,6 +100,10 @@ class FormFileUpload extends LitElement {
   }
 
   get hint() {
+    if (this.formManager.file && !this.formManager.isFileValid) {
+      return "Файл не прошел валидацию";
+    }
+
     if (!this.formManager.isNameValid) {
       return "Перед загрузкой дайте имя файлу";
     }
@@ -145,7 +149,9 @@ class FormFileUpload extends LitElement {
             ?disabled=${this.formManager.isFileFieldDisabled}
             ?loading=${this.formManager.isSubmitting}
             ?decreasing=${this.leaving}
-            .file =${this.formManager.file}
+            .file=${this.formManager.file}
+            .error=${!this.formManager.isFileValid}
+            .errorMessage=${this.formManager.fileValidationErrorMessage}
           ></file-field>
         </div>
 

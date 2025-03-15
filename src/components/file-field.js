@@ -95,6 +95,8 @@ class FileField extends LitElement {
     disabled: { type: Boolean, reflect: true },
     decreasing: { type: Boolean },
     file: { type: Object },
+    error: { type: Boolean },
+    errorMessage: { type: String },
   };
 
   constructor() {
@@ -104,6 +106,8 @@ class FileField extends LitElement {
     this.file = null;
     this.loading = false;
     this.decreasing = false;
+    this.error = false;
+    this.errorMessage = "";
 
     this._initializeAnimations();
   }
@@ -196,7 +200,9 @@ class FileField extends LitElement {
     this.dispatchEvent(fileLoaded);
   }
 
-  get hint() {
+  get _hint() {
+    if (this.file && this.error) return this.errorMessage || "Файл не прошел валидацию";
+
     return this.loading
       ? "Файл загружается на сервер"
       : html`Перенесите ваш файл <br />
@@ -226,7 +232,7 @@ class FileField extends LitElement {
             ?decreasing=${this.decreasing}
           ></docs-image>
 
-          <p class="hint font">${this.hint}</p>
+          <p class="hint font">${this._hint}</p>
         </button>
 
         <in-out-animated

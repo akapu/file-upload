@@ -31,6 +31,14 @@ export class FileUploadFormManager {
     return this._file;
   }
 
+  get isFileValid() {
+    return this._isFileValid;
+  }
+
+  get fileValidationErrorMessage() {
+    return this._fileValidationErrorMessage;
+  }
+
   set name(newName) {
     this._name = newName;
     this._validateName();
@@ -47,7 +55,7 @@ export class FileUploadFormManager {
   get isSubmitDisabled() {
     return (
       !this._isNameValid ||
-      this._isFileValid ||
+      !this._isFileValid ||
       !this._file ||
       !this._fileLoaded ||
       this._submitting
@@ -103,20 +111,20 @@ export class FileUploadFormManager {
     }
 
     if (this._file.size > 1024) {
-      this._isFileValid = true;
-      this._fileValidationErrorMessage = "Максимальный размер файла 1 КиБ";
+      this._isFileValid = false;
+      this._fileValidationErrorMessage = "Размер файла больше 1 КиБ";
       return;
     }
 
     const allowedExtensions = ["csv", "json", "txt"];
     const fileExtension = this._file.name.split(".").pop().toLowerCase();
     if (!allowedExtensions.includes(fileExtension)) {
-      this._isFileValid = true;
+      this._isFileValid = false;
       this._fileValidationErrorMessage = "Только csv, json, txt";
       return;
     }
 
-    this._isFileValid = false;
+    this._isFileValid = true;
     this._fileValidationErrorMessage = "";
   }
 
