@@ -57,10 +57,10 @@ export class FileUploadBackground extends LitElement {
     this.state = "form";
     this._initial = true;
 
-    this.initializeAnimations();
+    this._initializeAnimations();
   }
 
-  initializeAnimations() {
+  _initializeAnimations() {
     this._formToSuccess = new KeyframesComposer(
       theme.animationDurations.formToResult
     );
@@ -106,6 +106,18 @@ export class FileUploadBackground extends LitElement {
         stage: 4,
       },
     ]);
+
+    this._toForm = new KeyframesComposer(theme.animationDurations.resultToForm);
+    this._toForm.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      {
+        keyframe: {
+          "--file-upload-background-top": theme.colors.primary,
+          "--file-upload-background-middle": "#dddcfc",
+        },
+        stage: 1,
+      },
+    ]);
   }
 
   updated(changedProperties) {
@@ -120,6 +132,7 @@ export class FileUploadBackground extends LitElement {
     const stateComposerMap = {
       success: this._formToSuccess,
       error: this._formToError,
+      form: this._toForm,
     };
 
     const keyframesComposer = stateComposerMap[this.state];
