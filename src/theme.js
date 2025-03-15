@@ -36,6 +36,7 @@ export const theme = {
 
   animationDurations: {
     formToResult: [0, 220, 200, 90, 200],
+    resultToForm: [0, 200, 90, 200, 220],
     fieldEnterLeave: [0, 140],
   },
 };

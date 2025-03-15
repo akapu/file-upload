@@ -62,10 +62,10 @@ class FileUpload extends LitElement {
     this._stage = FileUpload.Stages.UPLOAD;
     this._closeButtonAnimationEnabled = false;
 
-    this.initializeAnimations();
+    this._initializeAnimations();
   }
 
-  initializeAnimations() {
+  _initializeAnimations() {
     this._windowBeforeResult = new KeyframesComposer(
       theme.animationDurations.formToResult
     );
@@ -85,6 +85,22 @@ class FileUpload extends LitElement {
         },
         stage: 3,
       },
+    ]);
+
+    this._windowBeforeForm = new KeyframesComposer(
+      theme.animationDurations.resultToForm
+    );
+    this._windowBeforeForm.setKeyframes([
+      { keyframe: {}, stage: 0 },
+      { keyframe: {}, stage: 1 },
+      { keyframe: { height: "310px" }, stage: 2 },
+    ]);
+
+    this._windowAfterForm = new KeyframesComposer(
+      theme.animationDurations.resultToForm
+    );
+    this._windowAfterForm.setKeyframes([
+      { keyframe: { height: "479px" }, stage: 3 },
     ]);
 
     this._closeButtonLeaving = new KeyframesComposer(
@@ -156,13 +172,12 @@ class FileUpload extends LitElement {
       },
     ]);
 
-    this._resultOut = new KeyframesComposer(resultInDurations);
+    this._resultOut = new KeyframesComposer(
+      theme.animationDurations.resultToForm
+    );
     this._resultOut.setKeyframes([
       {
-        keyframe: {
-          opacity: 0,
-          transform: "scale(0)",
-        },
+        keyframe: {},
         stage: 0,
       },
       {
@@ -174,8 +189,8 @@ class FileUpload extends LitElement {
       },
       {
         keyframe: {
-          opacity: "1",
-          transform: "scale(1)",
+          opacity: 0,
+          transform: "scale(0)",
         },
         stage: 2,
       },
@@ -215,6 +230,22 @@ class FileUpload extends LitElement {
     ).finished;
   }
 
+  async _openForm() {
+    this._stage = FileUpload.Stages.RESULT_LEAVING;
+
+    await this._window.value.animate(
+      this._windowBeforeResult.keyframesWithOffsets,
+      { duration: this._windowBeforeResult.totalDuration, fill: "forwards" }
+    ).finished;
+
+    this._stage = FileUpload.Stages.UPLOAD;
+
+    await this._window.value.animate(
+      this._windowAfterForm.keyframesWithOffsets,
+      { duration: this._windowAfterForm.totalDuration, fill: "forwards" }
+    ).finished;
+  }
+
   _handleSubmit(event) {
     this.requestUpdate(); // перед загрузкой файла
 
@@ -224,10 +255,11 @@ class FileUpload extends LitElement {
   _handleCloseButtonClick() {
     if (this._stage === FileUpload.Stages.UPLOAD) {
       this._dispatchCloseEvent();
+      this._openResult();
     }
 
     if (this._stage === FileUpload.Stages.RESULT_ENTERING) {
-      this._stage = FileUpload.Stages.RESULT_LEAVING;
+      this._openForm();
     }
   }
 
