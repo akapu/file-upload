@@ -71,19 +71,19 @@ export class FileUploadFormManager {
   }
 
   get error() {
-    return this._error
+    return this._error;
   }
 
   get errorStatus() {
-    return this._errorStatus
+    return this._errorStatus;
   }
 
   get errorText() {
-    return this._errorText
+    return this._errorText;
   }
 
   get data() {
-    return this._data
+    return this._data;
   }
 
   _validateName() {
@@ -122,6 +122,15 @@ export class FileUploadFormManager {
     this._errorStatus = 0;
     this._errorText = "";
     this._data = null;
+  }
+
+  clearFields() {
+    this._file = null;
+    this._fileLoaded = false;
+    this._name = "";
+    this._isNameValid = false;
+    this._isFileValid = false;
+    this._fileValidationErrorMessage = "";
   }
 
   submit() {
