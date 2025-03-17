@@ -155,7 +155,7 @@ class FileField extends LitElement {
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      if (this.file) this.fileStatus.value.startAnimation();
+      this.fileStatus.value.startAnimation();
 
       this.file = files[0];
 
