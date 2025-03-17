@@ -15,3 +15,14 @@
   inherits: true;
   initial-value: transparent;
 }
+
+body {
+  margin: 0px;
+}
+
+.centerer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
